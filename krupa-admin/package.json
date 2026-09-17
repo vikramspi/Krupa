@@ -1,0 +1,35 @@
+{
+  "name": "krupa-admin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Krupa Laundry operator admin \u2014 platform activity, orders, customers, vendors and reviews (Next.js + Supabase).",
+  "scripts": {
+    "dev": "next dev --port 3002",
+    "build": "next build",
+    "start": "next start --port 3002",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.109.0",
+    "@types/nodemailer": "^8.0.1",
+    "arctic": "^3.7.0",
+    "lucide-react": "^1.45.0",
+    "next": "16.3.4",
+    "nodemailer": "^10.0.9",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "^0.0.1",
+    "zod": "^4.6.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.20.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.3.4",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~5.9.3"
+  }
+}
