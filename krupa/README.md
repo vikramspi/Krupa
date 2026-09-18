@@ -29,9 +29,9 @@ This is one of three websites sharing one Supabase database:
 
 | Website | Folder | Local URL |
 | --- | --- | --- |
-| **Customer website** (this repo) | `~/dev/krupa` | http://localhost:3000 |
-| Partner portal (laundry partners) | `~/dev/krupa-vendors` | http://localhost:3001 |
-| Admin panel (operator only) | `~/dev/krupa-admin` | http://localhost:3002 |
+| **Customer website** (this repo) | `~/Krupa/krupa` | http://localhost:3000 |
+| Partner portal (laundry partners) | `~/Krupa/krupa-vendors` | http://localhost:3001 |
+| Admin panel (operator only) | `~/Krupa/krupa-admin` | http://localhost:3002 |
 
 **All migrations live here**, in `supabase/migrations`.
 

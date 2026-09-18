@@ -4,25 +4,25 @@
     {
       "name": "krupa-dev",
       "runtimeExecutable": "/bin/sh",
-      "runtimeArgs": ["-c", "cd /Users/vikram/dev/krupa && exec /Users/vikram/.nvm/versions/node/v20.19.2/bin/node node_modules/next/dist/bin/next dev --port 3000"],
+      "runtimeArgs": ["-c", "cd /Users/vikram/Krupa/krupa && exec /Users/vikram/.nvm/versions/node/v20.19.2/bin/node node_modules/next/dist/bin/next dev --port 3000"],
       "port": 3000
     },
     {
       "name": "krupa-vendors-dev",
       "runtimeExecutable": "/bin/sh",
-      "runtimeArgs": ["-c", "cd /Users/vikram/dev/krupa-vendors && exec /Users/vikram/.nvm/versions/node/v20.19.2/bin/node node_modules/next/dist/bin/next dev --port 3001"],
+      "runtimeArgs": ["-c", "cd /Users/vikram/Krupa/krupa-vendors && exec /Users/vikram/.nvm/versions/node/v20.19.2/bin/node node_modules/next/dist/bin/next dev --port 3001"],
       "port": 3001
     },
     {
       "name": "krupa-admin-dev",
       "runtimeExecutable": "/bin/sh",
-      "runtimeArgs": ["-c", "cd /Users/vikram/dev/krupa-admin && exec /Users/vikram/.nvm/versions/node/v20.19.2/bin/node node_modules/next/dist/bin/next dev --port 3002"],
+      "runtimeArgs": ["-c", "cd /Users/vikram/Krupa/krupa-admin && exec /Users/vikram/.nvm/versions/node/v20.19.2/bin/node node_modules/next/dist/bin/next dev --port 3002"],
       "port": 3002
     },
     {
       "name": "krupa-prod",
       "runtimeExecutable": "/bin/sh",
-      "runtimeArgs": ["-c", "cd /Users/vikram/dev/krupa && exec /Users/vikram/.nvm/versions/node/v20.19.2/bin/node node_modules/next/dist/bin/next start --port 3100"],
+      "runtimeArgs": ["-c", "cd /Users/vikram/Krupa/krupa && exec /Users/vikram/.nvm/versions/node/v20.19.2/bin/node node_modules/next/dist/bin/next start --port 3100"],
       "port": 3100
     }
   ]

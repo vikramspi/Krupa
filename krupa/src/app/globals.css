@@ -140,6 +140,57 @@
   }
 }
 
+/* Washing-drum loader (src/components/ui/WashLoader.tsx) */
+.wash-drum {
+  transform-origin: 50px 56px;
+  animation: wash-tumble 3.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+/* Counter-rotates each garment a little so they tumble rather than orbit rigidly. */
+.wash-cloth {
+  transform-origin: 50px 56px;
+  animation: wash-cloth 3.2s ease-in-out infinite;
+}
+.wash-water {
+  animation: wash-water 2.4s ease-in-out infinite alternate;
+}
+.wash-bubble {
+  fill: var(--color-brand-300);
+  opacity: 0;
+  animation: wash-bubble 3.6s ease-in infinite;
+}
+
+@keyframes wash-tumble {
+  0% { transform: rotate(0deg); }
+  45% { transform: rotate(200deg); }
+  55% { transform: rotate(190deg); }
+  100% { transform: rotate(390deg); }
+}
+@keyframes wash-cloth {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  50% { transform: rotate(-24deg) translateY(3px); }
+}
+@keyframes wash-water {
+  from { transform: translateX(-3px) translateY(0); }
+  to { transform: translateX(3px) translateY(-1.5px); }
+}
+@keyframes wash-bubble {
+  0% { opacity: 0; transform: translateY(0) scale(0.6); }
+  20% { opacity: 0.9; }
+  100% { opacity: 0; transform: translateY(-58px) scale(1.2); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wash-drum,
+  .wash-cloth,
+  .wash-water,
+  .wash-bubble {
+    animation: none;
+  }
+  .wash-bubble {
+    opacity: 0.5;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

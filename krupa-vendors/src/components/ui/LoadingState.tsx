@@ -1,4 +1,5 @@
 import { cn } from "@/lib/cn";
+import { WashLoader } from "./WashLoader";
 
 export function Spinner({ className }: { className?: string }) {
   return (
@@ -17,19 +18,21 @@ interface LoadingStateProps {
   title?: string;
   description?: string;
   className?: string;
-  /** Renders skeleton rows under the message instead of just a spinner. */
+  /** Renders skeleton rows under the message. */
   skeletonRows?: number;
+  /** Small inline loader instead of the full washing-drum mark. */
+  compact?: boolean;
 }
 
-export function LoadingState({ title = "Loading…", description, className, skeletonRows = 0 }: LoadingStateProps) {
+export function LoadingState({ title = "Loading…", description, className, skeletonRows = 0, compact = false }: LoadingStateProps) {
   return (
     <div
       role="status"
       aria-live="polite"
       className={cn("flex flex-col items-center text-center", /\bpy-/.test(className ?? "") ? null : "py-12", className)}
     >
-      <Spinner className="size-7 text-brand-600" />
-      <p className="mt-4 font-semibold text-ink-900">{title}</p>
+      {compact ? <Spinner className="size-7 text-brand-600" /> : <WashLoader size={104} />}
+      <p className={cn("font-semibold text-ink-900", compact ? "mt-4" : "mt-5 text-lg tracking-tight")}>{title}</p>
       {description && <p className="mt-1 max-w-sm text-sm text-ink-500">{description}</p>}
       {skeletonRows > 0 && (
         <div className="mt-8 w-full space-y-3">

@@ -1,6 +1,6 @@
 # Krupa Laundry — Admin Panel
 
-The operator's view of the whole platform. It is one of three websites sharing one Supabase database: the customer website on `:3000`, the partner portal on `:3001`, and **this admin panel on `:3002`**. Migrations live in `~/dev/krupa/supabase/migrations`, and this site needs `0007`.
+The operator's view of the whole platform. It is one of three websites sharing one Supabase database: the customer website on `:3000`, the partner portal on `:3001`, and **this admin panel on `:3002`**. Migrations live in `~/Krupa/krupa/supabase/migrations`, and this site needs `0007`.
 
 ## Sign-in: you only
 - **Google sign-in** (arctic, PKCE), accepted only for the Google accounts in `ADMIN_EMAILS`.

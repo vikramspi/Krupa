@@ -4,11 +4,11 @@ The website laundry partners (vendors) use to handle their Krupa Laundry orders.
 
 | Website | Folder | Local URL | Who uses it |
 | --- | --- | --- | --- |
-| Customer website | `~/dev/krupa` | http://localhost:3000 | Customers |
-| **Partner portal** | `~/dev/krupa-vendors` | http://localhost:3001 | Laundry partners |
-| Admin panel | `~/dev/krupa-admin` | http://localhost:3002 | The operator |
+| Customer website | `~/Krupa/krupa` | http://localhost:3000 | Customers |
+| **Partner portal** | `~/Krupa/krupa-vendors` | http://localhost:3001 | Laundry partners |
+| Admin panel | `~/Krupa/krupa-admin` | http://localhost:3002 | The operator |
 
-Database migrations live in **one place**: `~/dev/krupa/supabase/migrations`. This site needs `0007_vendor_portal_and_admin.sql`.
+Database migrations live in **one place**: `~/Krupa/krupa/supabase/migrations`. This site needs `0007_vendor_portal_and_admin.sql`.
 
 ## What partners can do
 - **Log in:**
