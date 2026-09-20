@@ -24,7 +24,7 @@ export function OrderHistoryList({ orders }: { orders: Order[] }) {
     <div className="space-y-8">
       {active.length > 0 && (
         <section aria-labelledby="active-orders">
-          <h2 id="active-orders" className="flex items-center gap-2 font-bold text-ink-900">
+          <h2 id="active-orders" className="flex items-center gap-2 font-semibold text-ink-900">
             Active orders <span className="rounded-full bg-brand-600 px-2 py-0.5 text-xs text-white">{active.length}</span>
           </h2>
           <ul className="mt-3 space-y-3">
@@ -37,7 +37,7 @@ export function OrderHistoryList({ orders }: { orders: Order[] }) {
         </section>
       )}
       <section aria-labelledby="past-orders">
-        <h2 id="past-orders" className="font-bold text-ink-900">
+        <h2 id="past-orders" className="font-semibold text-ink-900">
           Past orders
         </h2>
         {past.length === 0 ? (
@@ -62,15 +62,14 @@ function OrderRow({ order }: { order: Order }) {
   const active = isActiveOrder(order.status);
   const titleId = `order-${order.id}`;
   return (
-    <article aria-labelledby={titleId} className="rounded-3xl border border-line bg-white p-5 shadow-card transition-shadow hover:shadow-raised">
+    <article aria-labelledby={titleId} className="border border-line bg-white p-5 shadow-card transition-colors hover:border-ink-300">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
-          <h3 id={titleId} className="font-mono text-[15px] font-bold text-ink-900">
+          <h3 id={titleId} className="font-mono text-[15px] font-semibold text-ink-900">
             {order.id}
           </h3>
-          <p className="text-sm text-ink-500">
-            {order.vendor.name} · {formatLongDate(order.createdAt)}
-          </p>
+          <p className="text-sm text-ink-500">{order.vendor.name}</p>
+          <p className="mt-0.5 font-mono text-[13px] text-ink-400">{formatLongDate(order.createdAt)}</p>
         </div>
         <OrderStatusBadge status={order.status} />
       </div>

@@ -52,7 +52,7 @@ export function ErrorState({
       <div className="mb-5 flex size-14 items-center justify-center rounded-2xl bg-red-50 text-red-600" aria-hidden="true">
         <AlertTriangle className="size-6" />
       </div>
-      <h2 className="text-lg font-bold tracking-tight text-ink-900">{title}</h2>
+      <h2 className="text-lg font-semibold tracking-tight text-ink-900">{title}</h2>
       <p className="mt-2 max-w-md text-[15px] text-ink-500">{message}</p>
       {(onRetry || actions) && (
         <div className="mt-6 flex flex-wrap items-center justify-center gap-3">

@@ -52,7 +52,7 @@ export function VendorMatchingLoader({ areaName }: VendorMatchingLoaderProps) {
         <LogoMark className="relative size-16 text-brand-600 drop-shadow-md" />
       </div>
 
-      <h1 className="mt-8 text-balance text-2xl font-bold tracking-[-0.03em] text-ink-900 sm:text-[1.75rem]">
+      <h1 className="mt-8 text-balance text-2xl font-semibold tracking-[-0.03em] text-ink-900 sm:text-[1.75rem]">
         Finding the best laundry partner near you…
       </h1>
 

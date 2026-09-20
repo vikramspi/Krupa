@@ -99,9 +99,9 @@ export function VendorReviews({ vendorId, vendorName }: { vendorId: string; vend
               <p className="font-semibold text-ink-900">{review.authorName}</p>
               <RatingStars rating={review.rating} />
             </div>
-            <p className="mt-0.5 text-xs text-ink-500">
-              Verified order · {formatLongDate(review.createdAt)}
-              {review.edited && " · edited"}
+            <p className="mt-0.5 font-mono text-[12px] text-ink-500">
+              Verified order, {formatLongDate(review.createdAt)}
+              {review.edited && " (edited)"}
             </p>
             {review.comment && <p className="mt-2 whitespace-pre-line break-words text-[15px] text-ink-700">{review.comment}</p>}
           </li>

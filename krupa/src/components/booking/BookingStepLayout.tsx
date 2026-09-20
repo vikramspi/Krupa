@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, ChevronUp } from "lucide-react";
+import { ChevronUp } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -50,7 +50,6 @@ export function BookingStepLayout({
       onClick={onContinue}
       disabled={continueDisabled}
       loading={continueLoading}
-      trailingIcon={<ArrowRight className="size-5" aria-hidden="true" />}
     >
       {continueLabel}
     </Button>

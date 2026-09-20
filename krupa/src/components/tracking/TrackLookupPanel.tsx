@@ -12,7 +12,7 @@ export function TrackLookupPanel() {
   return (
     <div className="max-w-2xl">
       <Card padding="lg">
-        <h2 className="text-lg font-bold tracking-tight text-ink-900">Find your order</h2>
+        <h2 className="text-lg font-semibold tracking-tight text-ink-900">Find your order</h2>
         <p className="mt-1 text-[15px] text-ink-500">No login needed — just your order ID and the mobile number on the order.</p>
         <div className="mt-6">
           <TrackOrderLookupForm />

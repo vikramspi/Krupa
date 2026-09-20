@@ -63,7 +63,7 @@ function ScheduleStep() {
       showPickupInSummary
     >
       <StepHeader
-        eyebrow="Step 4 of 5 · Pickup"
+        eyebrow="Step 4 of 5"
         title="When should we pick up?"
         description={`Choose a day and a two-hour window. ${vendor.name}'s pickup executive will call you before arriving.`}
       />
@@ -127,7 +127,7 @@ function ScheduleStep() {
         </div>
 
         {delivery && summary.turnaround && (
-          <div className="flex items-start gap-3 rounded-2xl bg-brand-50 p-4 animate-fade-up" role="status">
+          <div className="flex items-start gap-3 rounded-2xl bg-brand-50 p-4" role="status">
             <PackageCheck className="mt-0.5 size-5 shrink-0 text-brand-700" aria-hidden="true" />
             <div className="text-[15px]">
               <p className="font-semibold text-brand-900">Estimated delivery: {formatDeliveryWindow(delivery.from, delivery.to)}</p>

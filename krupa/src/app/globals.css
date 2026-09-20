@@ -1,48 +1,60 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: var(--font-instrument), ui-serif, Georgia, serif;
+  --font-sans: var(--font-bricolage), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Anything that would be written on a laundry ticket is monospaced. */
+  --font-mono: var(--font-ticket), ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
 
-  /* Neutral "ink" scale — cool, slightly blue greys. 400 and darker pass WCAG AA on white. */
-  --color-ink-50: #f5f7fa;
-  --color-ink-100: #eaeef3;
-  --color-ink-200: #d6dce5;
-  --color-ink-300: #b4bfcd;
-  --color-ink-400: #6b778b;
-  --color-ink-500: #566377;
-  --color-ink-600: #435063;
-  --color-ink-700: #333d4e;
-  --color-ink-800: #222a38;
-  --color-ink-900: #141b27;
-  --color-ink-950: #0b1019;
+  /* "Ink" — navy-black, the colour of a counter ledger pen. */
+  --color-ink-50: #f4f7fb;
+  --color-ink-100: #e6ecf4;
+  --color-ink-200: #cfd9e7;
+  --color-ink-300: #a9b8ce;
+  --color-ink-400: #63758f;
+  --color-ink-500: #4c5f7a;
+  --color-ink-600: #3a4c65;
+  --color-ink-700: #2a3a51;
+  --color-ink-800: #1b283b;
+  --color-ink-900: #0f1c2e;
+  --color-ink-950: #08121f;
 
-  /* Brand — deep, clean teal */
-  --color-brand-50: #ebf7f5;
-  --color-brand-100: #d0eee8;
-  --color-brand-200: #a2dcd2;
-  --color-brand-300: #69c2b5;
-  --color-brand-400: #37a494;
-  --color-brand-500: #1a887a;
-  --color-brand-600: #117064;
-  --color-brand-700: #115a52;
-  --color-brand-800: #124843;
-  --color-brand-900: #113c38;
-  --color-brand-950: #062321;
+  /* Brand — "neel", the bluing that makes whites white. */
+  --color-brand-50: #eef3fd;
+  --color-brand-100: #dbe5fa;
+  --color-brand-200: #b8caf2;
+  --color-brand-300: #8da9e8;
+  --color-brand-400: #5b7fd4;
+  --color-brand-500: #3a61bd;
+  --color-brand-600: #2d4fa2;
+  --color-brand-700: #244080;
+  --color-brand-800: #1d3364;
+  --color-brand-900: #17284d;
+  --color-brand-950: #0d1930;
 
-  /* Warm accent — ratings, highlights */
-  --color-sun-50: #fff8eb;
-  --color-sun-100: #fdedc8;
-  --color-sun-300: #f9c75f;
-  --color-sun-400: #f5b536;
-  --color-sun-500: #e59a12;
-  --color-sun-700: #95580a;
+  /* Marigold — status and single highlights only, never decoration. */
+  --color-sun-50: #fdf6e9;
+  --color-sun-100: #f9e9c8;
+  --color-sun-300: #efc77a;
+  --color-sun-400: #e2a13a;
+  --color-sun-500: #c9861f;
+  --color-sun-700: #8a5a12;
 
-  --color-canvas: #f7f6f2;
-  --color-line: #e6e4dc;
+  /* Laundered paper, and the thread that rules it. */
+  --color-canvas: #edf1f7;
+  --color-line: #c9d4e4;
 
-  --shadow-card: 0 1px 2px rgb(11 16 25 / 0.04), 0 4px 16px -4px rgb(11 16 25 / 0.06);
-  --shadow-raised: 0 2px 4px rgb(11 16 25 / 0.04), 0 16px 40px -12px rgb(11 16 25 / 0.14);
+  /* Paper corners: small and squarish, not app-store rounded. */
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-2xl: 8px;
+  --radius-3xl: 12px;
+
+  /* Hairlines do the separating; shadows only lift what actually floats. */
+  --shadow-card: 0 1px 1px rgb(15 28 46 / 0.04);
+  --shadow-raised: 0 8px 24px -12px rgb(15 28 46 / 0.25);
 
   --animate-fade-up: fade-up 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   --animate-fade-in: fade-in 0.3s ease-out both;
@@ -104,6 +116,11 @@
     outline-offset: 2px;
   }
 
+  /* On ink/brand panels the blue ring would disappear into the background. */
+  .on-dark :focus-visible {
+    outline-color: #fff;
+  }
+
   ::selection {
     background: var(--color-brand-100);
     color: var(--color-brand-900);
@@ -137,6 +154,219 @@
   }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
+  }
+}
+
+/* ── Paper: the counter's tickets, ledgers and stamps ───────────────────── */
+
+/* A ticket stub: punched hole at the top, perforated tear along the left. */
+.ticket {
+  position: relative;
+  background: var(--color-paper, #fff);
+  border: 1px solid var(--color-line);
+  border-left: none;
+}
+.ticket::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: -1px;
+  width: 2px;
+  background-image: linear-gradient(
+    to bottom,
+    var(--color-line) 0 6px,
+    transparent 6px 12px
+  );
+  background-size: 2px 12px;
+}
+
+/* A slip torn off the pad: scalloped perforations along its top and bottom. */
+.tear-y::before,
+.tear-y::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  height: 10px;
+  background-image: radial-gradient(circle at 7px 0, var(--color-canvas) 5px, transparent 5.5px);
+  background-size: 14px 10px;
+}
+.tear-y::before {
+  top: 0;
+}
+.tear-y::after {
+  bottom: 0;
+  transform: rotate(180deg);
+}
+
+/* Ruled ledger paper: hairlines every row, like the counter's price book. */
+.ledger-row + .ledger-row {
+  border-top: 1px solid var(--color-line);
+}
+
+/* Menu-style dotted leader between an item and its price. */
+.leader {
+  flex: 1;
+  margin: 0 0.6rem;
+  border-bottom: 1px dotted var(--color-line);
+  transform: translateY(-0.28em);
+}
+
+/* Neighbourhood ticker: one run of names scrolls out while its copy follows,
+   so the loop has no seam. Halving the distance lands exactly on the copy. */
+.ticker-track {
+  animation: ticker 55s linear infinite;
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ticker-mask {
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 4rem, #000 calc(100% - 4rem), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 4rem, #000 calc(100% - 4rem), transparent);
+}
+.ticker-mask::-webkit-scrollbar {
+  display: none;
+}
+.ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track {
+    animation: none;
+  }
+}
+
+/* The counter pad: each line written onto the bill in turn, then the finished
+   sheet torn off downwards so the next one can start. */
+.bill-line {
+  animation: bill-line-in 0.34s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes bill-line-in {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: none; }
+}
+
+.bill-tear {
+  animation: bill-tear 0.85s cubic-bezier(0.4, 0, 0.55, 1) both;
+}
+@keyframes bill-tear {
+  0% { transform: none; opacity: 1; }
+  14% { transform: translateY(-4px) rotate(-0.5deg); opacity: 1; }
+  100% { transform: translateY(125%) rotate(3.5deg); opacity: 0; }
+}
+
+/* The loop is driven by timers that never start when motion is reduced, but
+   pin the resting state here too so a stray class can't hide the bill. */
+@media (prefers-reduced-motion: reduce) {
+  .bill-line,
+  .bill-tear {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* "How it works": the rail threads across, then each stage settles onto it. */
+.rail {
+  position: relative;
+}
+.rail::before {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: -1px;
+  height: 1px;
+  background: var(--color-brand-600);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.rail[data-in-view]::before {
+  transform: scaleX(1);
+}
+/* Only hide the stages where a script can actually reveal them again. With JS
+   off (or in a browser without `scripting`), they simply render as normal.
+   These are transitions rather than animations on purpose: a transition that
+   never gets to run still ends at its final value, where a filled animation
+   would strand the stage at opacity 0. */
+@media (scripting: enabled) {
+  .rail > * {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  .rail[data-in-view] > * {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+}
+
+/* Motion is a bonus here: without it the stages must still be readable. */
+@media (prefers-reduced-motion: reduce) {
+  .rail > *,
+  .rail[data-in-view] > * {
+    opacity: 1;
+    transform: none;
+  }
+  .rail::before {
+    transform: scaleX(1);
+  }
+}
+
+/* Coverage-map pins dropping onto the city, one after another. Tailwind drives
+   `translate` and `scale` on these buttons, so the drop uses `transform`, which
+   is left free. */
+@media (scripting: enabled) {
+  .map-pin {
+    opacity: 0;
+    transform: translateY(-18px);
+  }
+  .map-pin[data-shown] {
+    opacity: 1;
+    transform: none;
+    /* Only the entrance is staggered; hover and selection stay immediate. */
+    transition:
+      opacity 0.35s ease var(--pin-delay, 0ms),
+      transform 0.5s cubic-bezier(0.2, 1.3, 0.4, 1) var(--pin-delay, 0ms),
+      scale 0.15s ease,
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .map-pin {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The coverage tour's progress bar, restarted per partner by its React key. */
+.tour-progress {
+  transform-origin: left;
+  animation: tour-progress 4200ms linear both;
+}
+@keyframes tour-progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* The one memorable moment: a rubber stamp thumping onto the confirmation. */
+.stamp {
+  animation: stamp 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+@keyframes stamp {
+  0% { opacity: 0; transform: rotate(-14deg) scale(2.1); }
+  60% { opacity: 1; transform: rotate(-7deg) scale(0.94); }
+  100% { opacity: 1; transform: rotate(-7deg) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stamp {
+    animation: none;
   }
 }
 

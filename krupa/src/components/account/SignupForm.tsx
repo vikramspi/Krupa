@@ -53,7 +53,7 @@ export function SignupForm({ googleEnabled = false }: { googleEnabled?: boolean 
         <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-700" aria-hidden="true">
           <MailCheck className="size-6" />
         </span>
-        <h1 className="mt-5 text-2xl font-bold tracking-tight text-ink-900">Check your email</h1>
+        <h1 className="mt-5 text-2xl font-semibold tracking-tight text-ink-900">Check your email</h1>
         <p className="mx-auto mt-2 max-w-sm text-[15px] leading-relaxed text-ink-500">
           If that address can be registered, we&apos;ve sent a confirmation link to <strong className="text-ink-800">{email}</strong>. Click
           it to activate your account — the link lasts 24 hours.
@@ -71,7 +71,7 @@ export function SignupForm({ googleEnabled = false }: { googleEnabled?: boolean 
 
   return (
     <Card padding="lg">
-      <h1 className="text-2xl font-bold tracking-tight text-ink-900 sm:text-[1.75rem]">Create your account</h1>
+      <h1 className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-[1.75rem]">Create your account</h1>
       <p className="mt-1.5 text-[15px] text-ink-500">
         You&apos;ll verify a mobile number before your first order — your laundry partner needs a number to reach you.
       </p>

@@ -24,7 +24,7 @@ export function VendorAvatar({ id, name, size = "md", className }: { id: string;
         "flex shrink-0 items-center justify-center font-extrabold tracking-tight",
         size === "sm" && "size-10 rounded-xl text-sm",
         size === "md" && "size-12 rounded-2xl text-base",
-        size === "lg" && "size-16 rounded-[20px] text-xl",
+        size === "lg" && "size-16 rounded-xl text-xl",
         paletteFor(id),
         className,
       )}

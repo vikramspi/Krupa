@@ -39,7 +39,7 @@ export function QuantitySelector({ value, onChange, itemName, max = 50, disabled
           onChange(1);
         }}
         aria-label={`Add ${itemName}`}
-        className="inline-flex h-10 min-w-[92px] items-center justify-center gap-1.5 rounded-full border border-brand-200 bg-brand-50 px-4 text-sm font-bold text-brand-700 transition-colors hover:border-brand-300 hover:bg-brand-100 active:bg-brand-200 disabled:cursor-not-allowed disabled:border-ink-200 disabled:bg-ink-50 disabled:text-ink-400"
+        className="inline-flex h-10 min-w-[92px] items-center justify-center gap-1.5 rounded-lg border border-brand-200 bg-brand-50 px-4 text-sm font-bold text-brand-700 transition-colors hover:border-brand-300 hover:bg-brand-100 active:bg-brand-200 disabled:cursor-not-allowed disabled:border-ink-200 disabled:bg-ink-50 disabled:text-ink-400"
       >
         <Plus className="size-4" strokeWidth={2.5} aria-hidden="true" />
         Add
@@ -48,7 +48,7 @@ export function QuantitySelector({ value, onChange, itemName, max = 50, disabled
   }
 
   return (
-    <div role="group" aria-label={`${itemName} quantity`} className="inline-flex h-10 min-w-[92px] items-center rounded-full bg-brand-600 text-white shadow-card">
+    <div role="group" aria-label={`${itemName} quantity`} className="inline-flex h-10 min-w-[92px] items-center rounded-lg bg-brand-600 text-white shadow-card">
       <button
         type="button"
         disabled={disabled}

@@ -58,7 +58,7 @@ function ServicesStep({ vendorId }: { vendorId: string }) {
 
   const header = (
     <StepHeader
-      eyebrow="Step 3 of 5 · Services"
+      eyebrow="Step 3 of 5"
       title="What would you like cleaned?"
       description={
         <>

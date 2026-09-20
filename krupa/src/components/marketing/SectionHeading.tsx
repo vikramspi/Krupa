@@ -14,11 +14,14 @@ interface SectionHeadingProps {
 export function SectionHeading({ id, eyebrow, title, description, align = "left", tone = "light", className }: SectionHeadingProps) {
   return (
     <div className={cn(align === "center" && "mx-auto text-center", "max-w-2xl", className)}>
-      <p className={cn("text-xs font-bold uppercase tracking-[0.16em]", tone === "dark" ? "text-brand-300" : "text-brand-600")}>{eyebrow}</p>
+      <p className={cn("flex items-center gap-3 font-mono text-[13px]", tone === "dark" ? "text-brand-300" : "text-brand-700")}>
+        <span aria-hidden="true" className={cn("h-px w-8", tone === "dark" ? "bg-brand-300/50" : "bg-brand-300")} />
+        {eyebrow}
+      </p>
       <h2
         id={id}
         className={cn(
-          "mt-3 text-balance text-3xl font-bold leading-[1.1] tracking-[-0.035em] sm:text-[2.6rem]",
+          "mt-3 text-balance text-3xl font-semibold leading-[1.08] tracking-[-0.025em] sm:text-[2.7rem]",
           tone === "dark" ? "text-white" : "text-ink-950",
         )}
       >

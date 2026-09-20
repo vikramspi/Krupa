@@ -1,4 +1,4 @@
-import { ArrowRight, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -18,33 +18,28 @@ export function ServicesGrid({ offerings }: { offerings: ServiceOffering[] }) {
             title="Everything your wardrobe needs"
             description="From everyday wash & fold to silk sarees and sneakers, handled by partners who specialise in it."
           />
-          <ButtonLink href="/services" variant="outline" trailingIcon={<ArrowRight className="size-4" aria-hidden="true" />} className="self-start md:self-auto">
+          <ButtonLink href="/services" variant="outline" className="self-start md:self-auto">
             View all prices
           </ButtonLink>
         </div>
 
-        <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <ul className="mt-10 border-t border-line md:grid md:grid-cols-2 md:gap-x-12">
           {offerings.map((offering) => (
-            <li key={offering.id}>
-              <Link
-                href={`/services#${offering.id}`}
-                className="group flex h-full flex-col rounded-3xl border border-line bg-canvas p-5 transition-[background-color,border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-ink-200 hover:bg-white hover:shadow-raised"
-              >
-                <span className="flex size-12 items-center justify-center rounded-2xl bg-white text-brand-700 shadow-card ring-1 ring-line transition-colors group-hover:bg-brand-600 group-hover:text-white group-hover:ring-brand-600">
-                  <ServiceIcon icon={offering.icon} className="size-6" />
-                </span>
-                <h3 className="mt-5 font-bold tracking-tight text-ink-900">{offering.name}</h3>
-                <p className="mt-1.5 flex-1 text-[15px] leading-relaxed text-ink-500">{offering.shortDescription}</p>
-                <div className="mt-5 flex items-center justify-between border-t border-line pt-4 text-sm">
-                  <span className="text-ink-500">
-                    from <span className="font-bold text-ink-900">{formatINR(offering.startingPrice)}</span>
-                    <span className="text-ink-400"> / {offering.priceUnit}</span>
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-ink-500">
+            <li key={offering.id} className="border-b border-line">
+              <Link href={`/services#${offering.id}`} className="group flex items-baseline gap-4 py-4 transition-colors hover:bg-brand-50/60">
+                <ServiceIcon icon={offering.icon} className="size-5 shrink-0 translate-y-1 text-brand-700" />
+                <span className="min-w-0 flex-1">
+                  <span className="block font-semibold tracking-tight text-ink-900 group-hover:text-brand-800">{offering.name}</span>
+                  <span className="mt-0.5 block text-[15px] leading-snug text-ink-500">{offering.shortDescription}</span>
+                  <span className="mt-1 flex items-center gap-1 text-sm text-ink-400">
                     <Clock className="size-3.5" aria-hidden="true" />
                     {offering.turnaround}
                   </span>
-                </div>
+                </span>
+                <span className="shrink-0 whitespace-nowrap text-right">
+                  <span className="font-mono text-[15px] text-ink-900">{formatINR(offering.startingPrice)}</span>
+                  <span className="block text-xs text-ink-400">per {offering.priceUnit}</span>
+                </span>
               </Link>
             </li>
           ))}

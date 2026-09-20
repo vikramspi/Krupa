@@ -34,7 +34,7 @@ export function OrderSummaryPanel({ summary, onRemoveItem, showPickup = false, f
   return (
     <section aria-labelledby={titleId} className={cn(!bare && "rounded-3xl border border-line bg-white shadow-card", className)}>
       <div className={cn("flex items-center justify-between", bare ? "px-5 pt-5 sm:px-6" : "px-5 pt-5")}>
-        <h2 id={titleId} className="font-bold tracking-tight text-ink-900">
+        <h2 id={titleId} className="font-semibold tracking-tight text-ink-900">
           Order summary
         </h2>
         {pricing.itemCount > 0 && (
@@ -51,7 +51,7 @@ export function OrderSummaryPanel({ summary, onRemoveItem, showPickup = false, f
             <p className="truncate text-[15px] font-semibold text-ink-900">{vendor.name}</p>
             <RatingPill rating={vendor.rating} className="text-xs [&_svg]:size-3.5" />
           </div>
-          <Link href="/book/vendors" className="rounded-full px-2 py-1 text-sm font-semibold text-brand-700 hover:bg-brand-50">
+          <Link href="/book/vendors" className="rounded-lg px-2 py-1 text-sm font-semibold text-brand-700 hover:bg-brand-50">
             Change<span className="sr-only"> laundry partner</span>
           </Link>
         </div>

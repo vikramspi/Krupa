@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, CheckCircle2, MapPinOff, SearchX } from "lucide-react";
+import { CheckCircle2, MapPinOff, SearchX } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { AreaWaitlistForm } from "@/components/booking/AreaWaitlistForm";
@@ -47,7 +47,7 @@ export function ServiceAreaChecker({ popularAreas }: { popularAreas: ServiceArea
   return (
     <section id="service-area" aria-labelledby="service-area-title" className="scroll-mt-20 py-20 lg:py-28">
       <Container>
-        <div className="grid gap-10 rounded-[36px] border border-line bg-white p-6 shadow-card sm:p-10 lg:grid-cols-2 lg:gap-16 lg:p-14">
+        <div className="grid gap-10 border border-line bg-white p-6 shadow-card sm:p-10 lg:grid-cols-2 lg:gap-16 lg:p-14">
           <SectionHeading
             id="service-area-title"
             eyebrow="Service area"
@@ -84,7 +84,7 @@ export function ServiceAreaChecker({ popularAreas }: { popularAreas: ServiceArea
 
             {!result && (
               <div className="mt-5">
-                <p className="text-sm text-ink-500">Popular areas</p>
+                <p className="font-mono text-[13px] text-ink-500">Popular areas</p>
                 <ul className="mt-2 flex flex-wrap gap-2">
                   {popularAreas.map((area) => (
                     <li key={area.id}>
@@ -94,7 +94,7 @@ export function ServiceAreaChecker({ popularAreas }: { popularAreas: ServiceArea
                           setQuery(area.name);
                           void check(area.name);
                         }}
-                        className="rounded-full border border-line bg-canvas px-3.5 py-1.5 text-sm font-medium text-ink-700 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-800"
+                        className="rounded-lg border border-line bg-canvas px-3.5 py-1.5 text-sm font-medium text-ink-700 transition-colors hover:border-brand-300 hover:bg-brand-50 hover:text-brand-800"
                       >
                         {area.name}
                       </button>
@@ -150,11 +150,11 @@ function CheckResult({ result, onBook, onPickSuggestion, onReset }: CheckResultP
 
   if (result.status === "supported") {
     return (
-      <div className="animate-fade-up rounded-3xl border border-emerald-200 bg-emerald-50/60 p-5">
+      <div className="rounded-lg border border-emerald-200 bg-emerald-50/60 p-5">
         <div className="flex gap-3">
           <CheckCircle2 className="mt-0.5 size-6 shrink-0 text-emerald-600" aria-hidden="true" />
           <div>
-            <p className="font-bold text-ink-900">Great news — we pick up in {result.area.name}.</p>
+            <p className="font-semibold text-ink-900">Great news — we pick up in {result.area.name}.</p>
             <p className="mt-1 text-[15px] text-ink-600">
               {result.partnerCount > 0
                 ? `${pluralize(result.partnerCount, "laundry partner")} available near you right now.`
@@ -163,7 +163,7 @@ function CheckResult({ result, onBook, onPickSuggestion, onReset }: CheckResultP
           </div>
         </div>
         <div className="mt-4 flex flex-wrap gap-2 pl-9">
-          <Button onClick={() => onBook(result.area)} trailingIcon={<ArrowRight className="size-4" aria-hidden="true" />}>
+          <Button onClick={() => onBook(result.area)}>
             Book a pickup in {result.area.name}
           </Button>
           <Button variant="ghost" onClick={onReset}>
@@ -177,11 +177,11 @@ function CheckResult({ result, onBook, onPickSuggestion, onReset }: CheckResultP
   if (result.status === "coming_soon") {
     const place = result.area?.name ?? result.query;
     return (
-      <div className="animate-fade-up rounded-3xl border border-sun-100 bg-sun-50 p-5">
+      <div className="rounded-lg border border-sun-100 bg-sun-50 p-5">
         <div className="flex gap-3">
           <MapPinOff className="mt-0.5 size-6 shrink-0 text-sun-700" aria-hidden="true" />
           <div>
-            <p className="font-bold text-ink-900">We&apos;re coming soon to {place}.</p>
+            <p className="font-semibold text-ink-900">We&apos;re coming soon to {place}.</p>
             <p className="mt-1 text-[15px] text-ink-600">
               {result.reason === "outside_city"
                 ? "We currently serve Mumbai only, and nearby cities are next on our list."
@@ -198,11 +198,11 @@ function CheckResult({ result, onBook, onPickSuggestion, onReset }: CheckResultP
   }
 
   return (
-    <div className="animate-fade-up rounded-3xl border border-line bg-canvas p-5">
+    <div className="rounded-lg border border-line bg-canvas p-5">
       <div className="flex gap-3">
         <SearchX className="mt-0.5 size-6 shrink-0 text-ink-500" aria-hidden="true" />
         <div>
-          <p className="font-bold text-ink-900">We couldn&apos;t find &ldquo;{result.query}&rdquo;.</p>
+          <p className="font-semibold text-ink-900">We couldn&apos;t find &ldquo;{result.query}&rdquo;.</p>
           <p className="mt-1 text-[15px] text-ink-600">Try a neighbourhood name or a 6-digit pincode, or pick one of these:</p>
         </div>
       </div>
@@ -212,7 +212,7 @@ function CheckResult({ result, onBook, onPickSuggestion, onReset }: CheckResultP
             <button
               type="button"
               onClick={() => onPickSuggestion(area)}
-              className="rounded-full border border-line bg-white px-3.5 py-1.5 text-sm font-medium text-ink-700 hover:border-brand-300 hover:text-brand-800"
+              className="rounded-lg border border-line bg-white px-3.5 py-1.5 text-sm font-medium text-ink-700 hover:border-brand-300 hover:text-brand-800"
             >
               {area.name}
             </button>

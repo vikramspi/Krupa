@@ -61,7 +61,7 @@ export function ResetPasswordForm() {
         <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700" aria-hidden="true">
           <CheckCircle2 className="size-6" />
         </span>
-        <h1 className="mt-5 text-2xl font-bold tracking-tight text-ink-900">Password updated</h1>
+        <h1 className="mt-5 text-2xl font-semibold tracking-tight text-ink-900">Password updated</h1>
         <p className="mt-2 text-[15px] text-ink-500">You can now log in with your new password.</p>
         <ButtonLink href="/login?mode=email" className="mt-6">
           Go to login
@@ -72,7 +72,7 @@ export function ResetPasswordForm() {
 
   return (
     <Card padding="lg">
-      <h1 className="text-2xl font-bold tracking-tight text-ink-900 sm:text-[1.75rem]">Choose a new password</h1>
+      <h1 className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-[1.75rem]">Choose a new password</h1>
       <p className="mt-1.5 text-[15px] text-ink-500">This link works once. Your old password stays active until you finish here.</p>
       <form noValidate onSubmit={submit} className="mt-6 space-y-4">
         <Input

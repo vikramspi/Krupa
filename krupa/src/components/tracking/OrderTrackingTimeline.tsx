@@ -48,23 +48,26 @@ export function OrderTrackingTimeline({ order, compact = false }: OrderTrackingT
               <span
                 aria-hidden="true"
                 className={cn(
-                  "absolute left-[13px] top-7 w-0.5 rounded-full",
-                  compact ? "h-[calc(100%-20px)]" : "h-[calc(100%-24px)]",
-                  index < currentIndex ? "bg-brand-500" : "bg-ink-200",
+                  "absolute left-[11px] top-8 w-px",
+                  compact ? "h-[calc(100%-22px)]" : "h-[calc(100%-26px)]",
+                  index < currentIndex ? "bg-brand-400" : "bg-ink-200",
                 )}
               />
             )}
+            {/* A peg on the line: filled once done, open while still ahead. */}
             <span
               aria-hidden="true"
               className={cn(
-                "relative z-10 flex size-7 shrink-0 items-center justify-center rounded-full",
-                state === "done" && "bg-brand-600 text-white",
-                state === "current" && "bg-white ring-2 ring-brand-600 animate-pulse-ring",
-                state === "upcoming" && "bg-white ring-2 ring-ink-200",
+                "relative z-10 mt-0.5 flex h-7 w-6 shrink-0 -rotate-6 items-start justify-center rounded-t-full rounded-b-sm border-2 pt-1",
+                state === "done" && "border-brand-600 bg-brand-600 text-white",
+                state === "current" && "border-brand-600 bg-white text-brand-600",
+                state === "upcoming" && "border-ink-200 bg-white",
               )}
             >
-              {state === "done" && <Check className="size-4" strokeWidth={3} />}
-              {state === "current" && <span className="size-2.5 rounded-full bg-brand-600" />}
+              {state === "done" && <Check className="size-3.5" strokeWidth={3} />}
+              {state === "current" && <span className="size-2 rounded-full bg-brand-600" />}
+              {/* the peg's spring */}
+              <span className={cn("absolute inset-x-1 top-3 h-px", state === "upcoming" ? "bg-ink-200" : state === "done" ? "bg-white/50" : "bg-brand-300")} />
             </span>
 
             <div className={cn("min-w-0 flex-1", compact ? "pt-0.5" : "pt-0.5")}>
@@ -105,13 +108,11 @@ function CancelledTimeline({ order, compact }: { order: Order; compact: boolean 
         const cancelled = event.status === "cancelled";
         return (
           <li key={`${event.status}-${event.at}`} className={cn("relative flex gap-4", !isLast && (compact ? "pb-4" : "pb-6"))}>
-            {!isLast && (
-              <span aria-hidden="true" className="absolute left-[13px] top-7 h-[calc(100%-24px)] w-0.5 rounded-full bg-ink-200" />
-            )}
+            {!isLast && <span aria-hidden="true" className="absolute left-[11px] top-8 h-[calc(100%-26px)] w-px bg-ink-200" />}
             <span
               aria-hidden="true"
               className={cn(
-                "relative z-10 flex size-7 shrink-0 items-center justify-center rounded-full text-white",
+                "relative z-10 mt-0.5 flex h-7 w-6 shrink-0 -rotate-6 items-start justify-center rounded-t-full rounded-b-sm pt-1 text-white",
                 cancelled ? "bg-ink-500" : "bg-brand-600",
               )}
             >

@@ -56,8 +56,8 @@ export async function Footer() {
 
         {columns.map((column) => (
           <nav key={column.title} aria-label={column.title} className="md:col-span-2">
-            <h2 className="text-sm font-bold text-ink-900">{column.title}</h2>
-            <ul className="mt-4 space-y-3">
+            <h2 className="font-mono text-[13px] text-ink-500">{column.title}</h2>
+            <ul className="mt-3 space-y-2.5">
               {column.links.map((link) => (
                 <li key={link.href}>
                   <Link href={link.href} className="text-[15px] text-ink-500 transition-colors hover:text-ink-900">
@@ -70,15 +70,15 @@ export async function Footer() {
         ))}
 
         <div className="md:col-span-4">
-          <h2 className="text-sm font-bold text-ink-900">Popular areas</h2>
+          <h2 className="font-mono text-[13px] text-ink-500">Popular areas</h2>
           <ul className="mt-4 flex flex-wrap gap-2">
             {popularAreas.map((area) => (
-              <li key={area.id} className="rounded-full border border-line px-3 py-1 text-sm text-ink-600">
+              <li key={area.id} className="rounded-lg border border-line px-2.5 py-1 text-sm text-ink-600">
                 {area.name}
               </li>
             ))}
             <li>
-              <Link href="/#service-area" className="inline-block rounded-full px-3 py-1 text-sm font-semibold text-brand-700 hover:bg-brand-50">
+              <Link href="/#service-area" className="inline-block rounded-lg px-2.5 py-1 text-sm font-semibold text-brand-700 hover:bg-brand-50">
                 + more areas
               </Link>
             </li>

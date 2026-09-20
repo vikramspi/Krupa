@@ -1,3 +1,5 @@
+import { AreaTicker } from "@/components/marketing/AreaTicker";
+import { CoverageMap } from "@/components/marketing/CoverageMap";
 import { FinalCTA } from "@/components/marketing/FinalCTA";
 import { Hero } from "@/components/marketing/Hero";
 import { HowItWorks } from "@/components/marketing/HowItWorks";
@@ -8,30 +10,44 @@ import { WhyKrupa } from "@/components/marketing/WhyKrupa";
 import { serviceAreas } from "@/data/areas";
 import { siteConfig } from "@/lib/config";
 import { isDatabaseConfigured } from "@/server/env";
-import { getNetworkStats } from "@/server/repositories/vendors";
+import { getNetworkStats, listPartnersForCoverageMap } from "@/server/repositories/vendors";
 import { locationService, reviewService, serviceCatalog } from "@/services";
-import type { NetworkStats } from "@/types";
+import type { CoveragePartner, NetworkStats } from "@/types";
 
 // Partner count and rating come from the database: refresh the prerendered page every 5 minutes.
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const [offerings, reviews, popularAreas] = await Promise.all([
+  const [offerings, reviews, popularAreas, catalogItems] = await Promise.all([
     serviceCatalog.getServiceOfferings(),
     reviewService.getFeaturedReviews(),
     locationService.getPopularAreas(),
+    serviceCatalog.getServices(),
   ]);
 
+  // Real prices for the example bills on the hero pad.
+  const billCatalog = Object.fromEntries(
+    catalogItems.map((item) => [item.id, { name: item.name, price: item.basePrice }]),
+  );
+
   // The marketing page must render even if the database is unreachable.
-  const areasServed = serviceAreas.filter((area) => area.coverage === "supported").length;
+  const supportedAreas = serviceAreas.filter((area) => area.coverage === "supported");
+  const areasServed = supportedAreas.length;
   let stats: NetworkStats = { partnerCount: 0, averageRating: null, areasServed };
+  let coveragePartners: CoveragePartner[] = [];
   if (isDatabaseConfigured()) {
-    try {
-      const network = await getNetworkStats();
-      stats = { ...network, areasServed };
-    } catch (error) {
-      console.error("[home] network stats unavailable", error);
-    }
+    const [network, partners] = await Promise.all([
+      getNetworkStats().catch((error) => {
+        console.error("[home] network stats unavailable", error);
+        return null;
+      }),
+      listPartnersForCoverageMap().catch((error) => {
+        console.error("[home] coverage partners unavailable", error);
+        return [] as CoveragePartner[];
+      }),
+    ]);
+    if (network) stats = { ...network, areasServed };
+    coveragePartners = partners;
   }
 
   const structuredData = {
@@ -56,10 +72,16 @@ export default async function HomePage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
-      <Hero stats={stats} />
+      <Hero stats={stats} billCatalog={billCatalog} />
+      <AreaTicker areas={supportedAreas} />
       <HowItWorks />
       <ServicesGrid offerings={offerings} />
       <WhyKrupa partnerCount={stats.partnerCount} />
+      <CoverageMap
+        areas={supportedAreas}
+        partners={coveragePartners}
+        serviceNames={Object.fromEntries(offerings.map((offering) => [offering.id, offering.name]))}
+      />
       <ServiceAreaChecker popularAreas={popularAreas} />
       {reviews.length > 0 && <ReviewsCarousel reviews={reviews} />}
       <FinalCTA />

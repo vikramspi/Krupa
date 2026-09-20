@@ -47,7 +47,7 @@ export function ProfileCard({ customer, onUpdated }: ProfileCardProps) {
   return (
     <Card as="section" aria-labelledby="profile-title">
       <div className="flex items-center justify-between">
-        <h2 id="profile-title" className="font-bold text-ink-900">
+        <h2 id="profile-title" className="font-semibold text-ink-900">
           Profile
         </h2>
         {!editing && (

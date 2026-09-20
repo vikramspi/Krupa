@@ -14,7 +14,7 @@ interface StyleOptions {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "bg-brand-600 text-white shadow-[0_1px_0_rgb(255_255_255/0.15)_inset,0_1px_2px_rgb(6_35_33/0.2)] hover:bg-brand-700 active:bg-brand-800 disabled:bg-ink-200 disabled:text-ink-500 disabled:shadow-none",
+    "bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800 disabled:bg-ink-200 disabled:text-ink-500 disabled:shadow-none",
   secondary: "bg-brand-50 text-brand-800 hover:bg-brand-100 active:bg-brand-200 disabled:bg-ink-100 disabled:text-ink-400",
   outline:
     "border border-ink-200 bg-white text-ink-900 hover:border-ink-300 hover:bg-ink-50 active:bg-ink-100 disabled:text-ink-400 disabled:hover:bg-white",
@@ -27,9 +27,9 @@ const variantClasses: Record<ButtonVariant, string> = {
 
 // Sizes are tall enough for comfortable touch targets and line up with Input heights (md = h-12, lg = h-14).
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: "h-10 gap-1.5 rounded-full px-4 text-sm",
-  md: "h-12 gap-2 rounded-full px-5 text-[15px]",
-  lg: "h-14 gap-2.5 rounded-full px-7 text-base",
+  sm: "h-10 gap-1.5 rounded-lg px-4 text-sm",
+  md: "h-12 gap-2 rounded-lg px-5 text-[15px]",
+  lg: "h-14 gap-2.5 rounded-lg px-6 text-base",
 };
 
 /**

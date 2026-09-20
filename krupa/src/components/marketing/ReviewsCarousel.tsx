@@ -1,10 +1,9 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { RatingStars } from "@/components/ui/RatingStars";
-import { initials } from "@/lib/format";
 import type { PlatformReview } from "@/types";
 import { SectionHeading } from "./SectionHeading";
 
@@ -55,7 +54,7 @@ export function ReviewsCarousel({ reviews }: { reviews: PlatformReview[] }) {
               disabled={edges.atStart}
               aria-controls="reviews-track"
               aria-label="Previous reviews"
-              className="flex size-12 items-center justify-center rounded-full border border-line bg-white text-ink-800 transition-colors hover:bg-ink-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex size-11 items-center justify-center rounded-lg border border-line bg-white text-ink-800 transition-colors hover:bg-ink-50 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ChevronLeft className="size-5" aria-hidden="true" />
             </button>
@@ -65,7 +64,7 @@ export function ReviewsCarousel({ reviews }: { reviews: PlatformReview[] }) {
               disabled={edges.atEnd}
               aria-controls="reviews-track"
               aria-label="Next reviews"
-              className="flex size-12 items-center justify-center rounded-full border border-line bg-white text-ink-800 transition-colors hover:bg-ink-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="flex size-11 items-center justify-center rounded-lg border border-line bg-white text-ink-800 transition-colors hover:bg-ink-50 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <ChevronRight className="size-5" aria-hidden="true" />
             </button>
@@ -88,23 +87,17 @@ export function ReviewsCarousel({ reviews }: { reviews: PlatformReview[] }) {
               key={review.id}
               aria-roledescription="slide"
               aria-label={`${index + 1} of ${reviews.length}`}
-              className="flex w-[85%] shrink-0 snap-start flex-col rounded-3xl border border-line bg-canvas p-6 sm:w-[calc(50%-8px)] lg:w-[calc(33.333%-11px)]"
+              className="flex w-[85%] shrink-0 snap-start flex-col border border-line bg-white p-6 shadow-card sm:w-[calc(50%-8px)] lg:w-[calc(33.333%-11px)]"
             >
-              <div className="flex items-center justify-between">
-                <RatingStars rating={review.rating} size="md" />
-                <Quote className="size-6 text-brand-200" aria-hidden="true" />
-              </div>
-              <blockquote className="mt-4 flex-1 text-[16px] leading-relaxed text-ink-800">&ldquo;{review.text}&rdquo;</blockquote>
-              <div className="mt-6 flex items-center gap-3 border-t border-line pt-5">
-                <span className="flex size-10 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-800" aria-hidden="true">
-                  {initials(review.author)}
-                </span>
-                <div className="min-w-0">
+              <RatingStars rating={review.rating} size="md" />
+              <blockquote className="mt-4 flex-1 text-[16px] leading-relaxed text-ink-800">{review.text}</blockquote>
+              <div className="mt-6 border-t border-line pt-4">
+                <div className="flex items-baseline">
                   <p className="font-semibold text-ink-900">{review.author}</p>
-                  <p className="truncate text-sm text-ink-500">
-                    {review.area} · {review.service}
-                  </p>
+                  <span className="leader" aria-hidden="true" />
+                  <p className="shrink-0 font-mono text-[13px] text-ink-500">{review.area}</p>
                 </div>
+                <p className="mt-1 font-mono text-[13px] text-ink-400">{review.service}</p>
               </div>
             </li>
           ))}

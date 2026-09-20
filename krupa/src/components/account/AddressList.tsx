@@ -102,7 +102,7 @@ export function AddressList({ addresses, onChange }: AddressListProps) {
   return (
     <Card as="section" aria-labelledby="addresses-title">
       <div className="flex items-center justify-between">
-        <h2 id="addresses-title" className="font-bold text-ink-900">
+        <h2 id="addresses-title" className="font-semibold text-ink-900">
           Saved addresses
         </h2>
         {editing === null && (

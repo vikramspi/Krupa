@@ -62,14 +62,14 @@ export function Sheet({ open, onClose, title, hideTitle, description, children, 
       }}
       className={cn(
         // `open:flex` (not `flex`) so author CSS never overrides the closed dialog's display:none.
-        "m-0 mt-auto max-h-[92dvh] w-full max-w-none flex-col overflow-hidden rounded-t-[28px] bg-white p-0 text-ink-900 shadow-raised open:flex open:animate-fade-up",
+        "m-0 mt-auto max-h-[92dvh] w-full max-w-none flex-col overflow-hidden rounded-t-2xl bg-white p-0 text-ink-900 shadow-raised open:flex open:animate-fade-up",
         "md:ml-auto md:mr-0 md:mt-0 md:h-dvh md:max-h-none md:w-[520px] md:rounded-none md:rounded-l-[28px]",
         className,
       )}
     >
       <div className="flex items-start justify-between gap-4 border-b border-line px-5 pb-4 pt-5 sm:px-6">
         <div className="min-w-0">
-          <h2 id={titleId} className={cn("text-lg font-bold tracking-tight", hideTitle && "sr-only")}>
+          <h2 id={titleId} className={cn("text-lg font-semibold tracking-tight", hideTitle && "sr-only")}>
             {title}
           </h2>
           {description && (

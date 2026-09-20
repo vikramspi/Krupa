@@ -14,8 +14,9 @@ import { MobileNav, type NavLink } from "./MobileNav";
 const baseLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/services", label: "Services" },
-  { href: "/#how-it-works", label: "How It Works" },
-  { href: "/track", label: "Track Order" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/#coverage", label: "Coverage" },
+  { href: "/track", label: "Track order" },
 ];
 
 function isActive(pathname: string, href: string) {
@@ -41,7 +42,7 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const accountLink: NavLink = signedIn ? { href: "/account", label: "My Account" } : { href: "/login", label: "Login" };
+  const accountLink: NavLink = signedIn ? { href: "/account", label: "My account" } : { href: "/login", label: "Log in" };
 
   return (
     <>
@@ -61,7 +62,7 @@ export function Navbar() {
                   <Link
                     href={link.href}
                     aria-current={isActive(pathname, link.href) ? "page" : undefined}
-                    className="rounded-full px-3.5 py-2 text-[15px] font-medium text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-900 aria-[current=page]:text-ink-900 aria-[current=page]:font-semibold"
+                    className="rounded-lg px-3 py-2 text-[15px] font-medium text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-900 aria-[current=page]:font-semibold aria-[current=page]:text-ink-900"
                   >
                     {link.label}
                   </Link>
@@ -74,18 +75,18 @@ export function Navbar() {
             <Link
               href={accountLink.href}
               aria-current={isActive(pathname, accountLink.href) ? "page" : undefined}
-              className="hidden items-center gap-2 rounded-full px-3.5 py-2 text-[15px] font-medium text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-900 lg:inline-flex"
+              className="hidden items-center gap-2 rounded-lg px-3 py-2 text-[15px] font-medium text-ink-600 transition-colors hover:bg-ink-100 hover:text-ink-900 lg:inline-flex"
             >
               {signedIn && <UserRound className="size-4" aria-hidden="true" />}
-              {signedIn ? (customer?.name?.split(" ")[0] || "Account") : "Login"}
+              {signedIn ? (customer?.name?.split(" ")[0] || "Account") : "Log in"}
             </Link>
             <ButtonLink href="/book" size="sm">
-              Book Pickup
+              Book a pickup
             </ButtonLink>
             <button
               ref={menuButtonRef}
               type="button"
-              className="-mr-2 flex size-11 items-center justify-center rounded-full text-ink-800 hover:bg-ink-100 lg:hidden"
+              className="-mr-2 flex size-11 items-center justify-center rounded-lg text-ink-800 hover:bg-ink-100 lg:hidden"
               aria-expanded={menuOpen}
               aria-controls="mobile-nav"
               aria-label={menuOpen ? "Close menu" : "Open menu"}

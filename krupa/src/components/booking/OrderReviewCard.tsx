@@ -75,17 +75,17 @@ export function OrderReviewCard({ summary, details, deliveryWindow }: OrderRevie
 
       <section aria-labelledby="review-items" className="p-5 sm:p-6">
         <div className="flex items-center justify-between">
-          <h2 id="review-items" className="font-bold text-ink-900">
+          <h2 id="review-items" className="font-semibold text-ink-900">
             Items
           </h2>
-          <Link href="/book/services" className="rounded-full px-2 py-1 text-sm font-semibold text-brand-700 hover:bg-brand-50">
+          <Link href="/book/services" className="rounded-lg px-2 py-1 text-sm font-semibold text-brand-700 hover:bg-brand-50">
             Edit<span className="sr-only"> items</span>
           </Link>
         </div>
         <table className="mt-3 w-full text-[15px]">
           <caption className="sr-only">Items in this order</caption>
           <thead>
-            <tr className="text-left text-xs uppercase tracking-[0.1em] text-ink-400">
+            <tr className="text-left font-mono text-[12px] text-ink-500">
               <th scope="col" className="pb-2 font-semibold">Item</th>
               <th scope="col" className="pb-2 text-right font-semibold">Qty × price</th>
               <th scope="col" className="pb-2 text-right font-semibold">Amount</th>
@@ -133,10 +133,10 @@ function ReviewSection({
       </span>
       <div className="min-w-0 flex-1 text-[15px]">
         <div className="flex items-start justify-between gap-2">
-          <h2 id={id} className="text-xs font-bold uppercase tracking-[0.12em] text-ink-400">
+          <h2 id={id} className="font-mono text-[13px] text-ink-500">
             {title}
           </h2>
-          <Link href={editHref} className="-mt-1 rounded-full px-2 py-1 text-sm font-semibold text-brand-700 hover:bg-brand-50">
+          <Link href={editHref} className="-mt-1 rounded-lg px-2 py-1 text-sm font-semibold text-brand-700 hover:bg-brand-50">
             Edit<span className="sr-only"> {editLabel}</span>
           </Link>
         </div>

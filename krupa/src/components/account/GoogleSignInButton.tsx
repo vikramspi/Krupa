@@ -9,7 +9,7 @@ export function GoogleSignInButton({ next, label = "Continue with Google", class
     <a
       href={`/api/auth/google?next=${encodeURIComponent(next)}`}
       className={cn(
-        "flex min-h-12 w-full items-center justify-center gap-3 rounded-full border border-line bg-white px-5 text-[15px] font-semibold text-ink-900 shadow-card transition-colors hover:bg-ink-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600",
+        "flex min-h-12 w-full items-center justify-center gap-3 rounded-lg border border-line bg-white px-5 text-[15px] font-semibold text-ink-900 shadow-card transition-colors hover:bg-ink-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600",
         className,
       )}
     >
@@ -21,7 +21,7 @@ export function GoogleSignInButton({ next, label = "Continue with Google", class
 
 export function OrDivider() {
   return (
-    <div className="my-6 flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.14em] text-ink-400" role="separator">
+    <div className="my-6 flex items-center gap-3 font-mono text-[13px] text-ink-500" role="separator">
       <span className="h-px flex-1 bg-line" />
       or
       <span className="h-px flex-1 bg-line" />

@@ -21,8 +21,8 @@ export function LegalPage({ title, intro, children }: { title: string; intro: st
 
   return (
     <Container size="narrow" className="py-12 sm:py-16">
-      <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-600">Legal</p>
-      <h1 className="mt-3 text-balance text-4xl font-bold leading-[1.1] tracking-[-0.035em] text-ink-950">{title}</h1>
+      <p className="font-mono text-[13px] text-brand-700">Legal</p>
+      <h1 className="mt-3 text-balance text-4xl font-semibold leading-[1.1] tracking-[-0.035em] text-ink-950">{title}</h1>
       <p className="mt-4 text-lg leading-relaxed text-ink-500">{intro}</p>
       <p className="mt-4 text-sm text-ink-500">Last updated: {LEGAL_LAST_UPDATED}</p>
 
@@ -40,7 +40,7 @@ export function LegalPage({ title, intro, children }: { title: string; intro: st
       </div>
 
       <div className="mt-12 rounded-2xl border border-line bg-white p-5">
-        <h2 className="font-bold text-ink-900">Contact us</h2>
+        <h2 className="font-semibold text-ink-900">Contact us</h2>
         <p className="mt-2 text-[15px] text-ink-600">
           {siteConfig.legalEntity || <Todo>registered business name</Todo>}
           {", "}

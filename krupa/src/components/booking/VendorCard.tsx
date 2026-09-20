@@ -35,7 +35,7 @@ export function VendorCard({ vendor, offeringNames, selected, onSelect }: Vendor
       )}
     >
       {vendor.isBestMatch && (
-        <span className="absolute -top-3 left-5 inline-flex items-center gap-1 rounded-full bg-brand-600 px-2.5 py-1 text-xs font-bold text-white shadow-card">
+        <span className="absolute -top-3 left-5 inline-flex items-center gap-1 rounded-sm bg-brand-600 px-2.5 py-1 text-xs font-semibold text-white shadow-card">
           <Sparkles className="size-3.5" aria-hidden="true" />
           Best match
         </span>
@@ -45,7 +45,7 @@ export function VendorCard({ vendor, offeringNames, selected, onSelect }: Vendor
         <VendorAvatar id={vendor.id} name={vendor.name} />
         <div className="min-w-0 flex-1">
           <div className="flex items-start justify-between gap-3">
-            <h3 id={titleId} className="text-[17px] font-bold leading-snug tracking-tight text-ink-900">
+            <h3 id={titleId} className="text-[17px] font-semibold leading-snug tracking-tight text-ink-900">
               {vendor.name}
             </h3>
             <RatingPill rating={vendor.rating} count={vendor.reviewCount > 0 ? vendor.reviewCount : undefined} className="shrink-0 pt-0.5" />
@@ -80,7 +80,7 @@ export function VendorCard({ vendor, offeringNames, selected, onSelect }: Vendor
       </div>
 
       {reasons.length > 0 && !vendor.atCapacity && (
-        <p className="mt-3 text-sm font-medium text-brand-700">{reasons.join(" · ")}</p>
+        <p className="mt-3 text-sm font-medium text-brand-700">{reasons.join(", ")}</p>
       )}
 
       <dl className="mt-4 grid grid-cols-2 gap-3 rounded-2xl bg-canvas p-3.5 text-sm">
@@ -106,12 +106,12 @@ export function VendorCard({ vendor, offeringNames, selected, onSelect }: Vendor
         <p className="sr-only">Services offered:</p>
         <ul className="flex flex-wrap gap-1.5">
           {vendor.services.slice(0, MAX_CHIPS).map((id) => (
-            <li key={id} className="rounded-full border border-line px-2.5 py-0.5 text-xs font-medium text-ink-600">
+            <li key={id} className="rounded-sm border border-line px-2.5 py-0.5 text-xs font-medium text-ink-600">
               {offeringNames[id] ?? id}
             </li>
           ))}
           {vendor.services.length > MAX_CHIPS && (
-            <li className="rounded-full px-1.5 py-0.5 text-xs font-semibold text-ink-500">+{vendor.services.length - MAX_CHIPS} more</li>
+            <li className="px-1.5 py-0.5 text-xs font-semibold text-ink-500">+{vendor.services.length - MAX_CHIPS} more</li>
           )}
         </ul>
       </div>

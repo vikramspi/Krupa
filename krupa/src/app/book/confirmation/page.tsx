@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, Check, Clock, PackageSearch, Phone, ShoppingBag } from "lucide-react";
+import { Check, Clock, PackageSearch, Phone, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { PriceBreakdown } from "@/components/booking/PriceBreakdown";
@@ -28,7 +28,7 @@ export default function ConfirmationPage() {
     return (
       <Container size="narrow">
         <EmptyState
-          className="rounded-[32px] border border-line bg-white py-14 shadow-card"
+          className="border border-line bg-white py-14 shadow-card"
           icon={<ShoppingBag />}
           title="No recent booking to show"
           description="Once you place an order, its confirmation will appear here. Looking for an existing order? Track it with your order ID."
@@ -105,12 +105,12 @@ function Confirmation({ orderId }: { orderId: string }) {
   return (
     <Container size="narrow">
       <div className="text-center">
-        <div className="mx-auto flex size-20 items-center justify-center rounded-full bg-brand-600 shadow-raised animate-pop" aria-hidden="true">
-          <svg viewBox="0 0 24 24" className="size-10 text-white" fill="none">
-            <path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="48" className="animate-draw" />
-          </svg>
+        {/* The counter's rubber stamp — the one animated moment on the site. */}
+        <div className="stamp mx-auto inline-flex flex-col items-center rounded-sm border-[3px] border-brand-600 px-6 py-2.5 text-brand-600" aria-hidden="true">
+          <span className="font-mono text-xl font-medium uppercase tracking-[0.2em]">Received</span>
+          <span className="font-mono text-[11px] tracking-widest">KRUPA LAUNDRY</span>
         </div>
-        <h1 className="mt-6 text-balance text-3xl font-bold tracking-[-0.035em] text-ink-950 sm:text-4xl">We&apos;ve received your order!</h1>
+        <h1 className="mt-6 text-balance text-3xl font-semibold tracking-[-0.035em] text-ink-950 sm:text-4xl">We&apos;ve received your order!</h1>
         <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed text-ink-500 sm:text-base">
           We&apos;ve sent it to {o.vendor.name}. Once they confirm, their pickup executive will call {formatPhone(o.contact.phone)} before arriving.
         </p>
@@ -122,7 +122,7 @@ function Confirmation({ orderId }: { orderId: string }) {
         </div>
       </div>
 
-      <div className="mt-10 grid gap-5 animate-fade-up [animation-delay:200ms]">
+      <div className="mt-10 grid gap-5 [animation-delay:200ms]">
         <section aria-labelledby="checklist-title" className="rounded-3xl border border-line bg-white p-5 shadow-card sm:p-6">
           <h2 id="checklist-title" className="sr-only">
             Booking status
@@ -154,7 +154,7 @@ function Confirmation({ orderId }: { orderId: string }) {
 
         <section aria-labelledby="confirm-payment" className="rounded-3xl border border-line bg-white p-5 shadow-card sm:p-6">
           <div className="flex items-baseline justify-between">
-            <h2 id="confirm-payment" className="font-bold text-ink-900">
+            <h2 id="confirm-payment" className="font-semibold text-ink-900">
               Payment
             </h2>
             <span className="text-sm text-ink-500">Pay after delivery</span>
@@ -165,7 +165,7 @@ function Confirmation({ orderId }: { orderId: string }) {
         </section>
 
         <section aria-labelledby="next-steps" className="rounded-3xl bg-ink-950 p-5 text-white sm:p-6">
-          <h2 id="next-steps" className="font-bold">
+          <h2 id="next-steps" className="font-semibold">
             What happens next
           </h2>
           <ol className="mt-4 space-y-3 text-[15px] text-ink-200">
@@ -200,7 +200,7 @@ function Confirmation({ orderId }: { orderId: string }) {
         <p className="mt-6 text-center text-sm text-ink-500">
           Keep your order ID handy — you can track it anytime with your mobile number.{" "}
           <Link href={`/login?next=/account`} className="inline-flex items-center gap-0.5 font-semibold text-brand-700 underline underline-offset-4">
-            Log in to see all your orders <ArrowRight className="size-3.5" aria-hidden="true" />
+            Log in to see all your orders
           </Link>
         </p>
       )}

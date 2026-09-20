@@ -1,5 +1,6 @@
 import { CalendarClock, MapPinned, Sparkles, Truck } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { InView } from "@/components/ui/InView";
 import { SectionHeading } from "./SectionHeading";
 
 const steps = [
@@ -35,25 +36,28 @@ export function HowItWorks() {
           title="Fresh laundry in four simple steps"
           description="No calling around, no haggling, no guesswork. We handle the matching so you don't have to."
         />
-        <ol className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Four stages strung along one line, like garments on a rail. */}
+        <InView as="ol" className="rail mt-12 border-t border-line lg:grid lg:grid-cols-4">
           {steps.map((step, index) => (
-            <li key={step.title} className="group relative rounded-3xl border border-line bg-white p-6 shadow-card">
-              <div className="flex items-center justify-between">
-                <span className="flex size-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-700 transition-colors duration-300 group-hover:bg-brand-600 group-hover:text-white">
-                  <step.icon className="size-6" aria-hidden="true" strokeWidth={1.75} />
+            <li
+              key={step.title}
+              className="border-b border-line py-6 lg:border-b-0 lg:border-r lg:px-6 lg:py-8 lg:first:pl-0 lg:last:border-r-0 lg:last:pr-0"
+              style={{ transitionDelay: `${index * 110}ms` }}
+            >
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-sm text-brand-700" aria-hidden="true">
+                  {index + 1}
                 </span>
-                <span className="font-display text-4xl italic text-ink-200" aria-hidden="true">
-                  0{index + 1}
-                </span>
+                <step.icon className="size-5 text-ink-400" aria-hidden="true" strokeWidth={1.5} />
+                <h3 className="text-lg font-semibold tracking-tight text-ink-900">
+                  <span className="sr-only">Step {index + 1}: </span>
+                  {step.title}
+                </h3>
               </div>
-              <h3 className="mt-6 text-lg font-bold tracking-tight text-ink-900">
-                <span className="sr-only">Step {index + 1}: </span>
-                {step.title}
-              </h3>
-              <p className="mt-2 text-[15px] leading-relaxed text-ink-500">{step.description}</p>
+              <p className="mt-3 max-w-xs text-[15px] leading-relaxed text-ink-600 lg:mt-4">{step.description}</p>
             </li>
           ))}
-        </ol>
+        </InView>
       </Container>
     </section>
   );

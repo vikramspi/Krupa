@@ -34,7 +34,7 @@ export function AccountDashboard() {
     return (
       <Container size="narrow" className="py-16">
         <EmptyState
-          className="rounded-[32px] border border-line bg-white py-14 shadow-card"
+          className="border border-line bg-white py-14 shadow-card"
           tone="brand"
           icon={<LogIn />}
           title="Log in to see your account"
@@ -77,8 +77,8 @@ export function AccountDashboard() {
     <Container className="pb-20 pt-10 sm:pt-14">
       <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-600">My account</p>
-          <h1 className="mt-2 text-3xl font-bold tracking-[-0.035em] text-ink-950 sm:text-4xl">
+          <p className="font-mono text-[13px] text-brand-700">My account</p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-[-0.035em] text-ink-950 sm:text-4xl">
             Hi, {profile.name.split(" ")[0]}
           </h1>
         </div>

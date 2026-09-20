@@ -1,4 +1,4 @@
-import { ArrowRight, BadgePercent, Check, Clock, Truck } from "lucide-react";
+import { BadgePercent, Check, Clock, Truck } from "lucide-react";
 import type { Metadata } from "next";
 import { ButtonLink } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
@@ -25,10 +25,10 @@ export default async function ServicesPage() {
     <>
       <section className="pb-12 pt-10 sm:pt-16" aria-labelledby="services-page-title">
         <Container>
-          <p className="text-xs font-bold uppercase tracking-[0.16em] text-brand-600">Services & pricing</p>
-          <h1 id="services-page-title" className="mt-3 max-w-3xl text-balance text-4xl font-bold leading-[1.05] tracking-[-0.04em] text-ink-950 sm:text-6xl">
+          <p className="font-mono text-[13px] text-brand-700">Services & pricing</p>
+          <h1 id="services-page-title" className="mt-3 max-w-3xl text-balance text-4xl font-semibold leading-[1.05] tracking-[-0.04em] text-ink-950 sm:text-6xl">
             Clear prices for{" "}
-            <span className="font-display font-normal italic text-brand-600">every item</span> you send.
+            <span className="font-semibold text-brand-700">every item</span> you send.
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-500">
             These are standard prices across our partner network. Each partner&apos;s exact price is shown before you
@@ -36,19 +36,19 @@ export default async function ServicesPage() {
           </p>
 
           <ul className="mt-8 grid gap-3 sm:grid-cols-3">
-            <li className="flex items-center gap-3 rounded-2xl border border-line bg-white p-4">
+            <li className="flex items-center gap-3 rounded-lg border border-line bg-white p-4">
               <Truck className="size-5 shrink-0 text-brand-600" aria-hidden="true" />
               <span className="text-[15px] text-ink-700">
                 <strong className="font-semibold text-ink-900">Free pickup</strong> on orders over {formatINR(FREE_PICKUP_THRESHOLD)}
               </span>
             </li>
-            <li className="flex items-center gap-3 rounded-2xl border border-line bg-white p-4">
+            <li className="flex items-center gap-3 rounded-lg border border-line bg-white p-4">
               <BadgePercent className="size-5 shrink-0 text-brand-600" aria-hidden="true" />
               <span className="text-[15px] text-ink-700">
                 <strong className="font-semibold text-ink-900">10% off</strong> over {formatINR(DISCOUNT_THRESHOLD)} (up to {formatINR(DISCOUNT_CAP)})
               </span>
             </li>
-            <li className="flex items-center gap-3 rounded-2xl border border-line bg-white p-4">
+            <li className="flex items-center gap-3 rounded-lg border border-line bg-white p-4">
               <Check className="size-5 shrink-0 text-brand-600" aria-hidden="true" />
               <span className="text-[15px] text-ink-700">
                 <strong className="font-semibold text-ink-900">Pay after delivery</strong> — cash or UPI
@@ -60,21 +60,21 @@ export default async function ServicesPage() {
 
       <section aria-labelledby="offerings-title" className="bg-white py-16 lg:py-20">
         <Container>
-          <h2 id="offerings-title" className="text-2xl font-bold tracking-tight text-ink-900 sm:text-3xl">
+          <h2 id="offerings-title" className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">
             What we clean
           </h2>
           <ul className="mt-8 grid gap-4 md:grid-cols-2">
             {offerings.map((offering) => (
-              <li key={offering.id} id={offering.id} className="scroll-mt-24 rounded-3xl border border-line bg-canvas p-6 target:border-brand-300 target:bg-brand-50/50 target:ring-4 target:ring-brand-100">
+              <li key={offering.id} id={offering.id} className="scroll-mt-24 border border-line bg-white p-6 shadow-card target:border-brand-400 target:bg-brand-50/60">
                 <div className="flex items-start gap-4">
-                  <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white text-brand-700 shadow-card ring-1 ring-line">
+                  <span className="flex size-12 shrink-0 items-center justify-center rounded-lg bg-canvas text-brand-700 ring-1 ring-line">
                     <ServiceIcon icon={offering.icon} className="size-6" />
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                      <h3 className="text-lg font-bold tracking-tight text-ink-900">{offering.name}</h3>
-                      <p className="text-sm text-ink-500">
-                        from <span className="font-bold text-ink-900">{formatINR(offering.startingPrice)}</span> / {offering.priceUnit}
+                      <h3 className="text-lg font-semibold tracking-tight text-ink-900">{offering.name}</h3>
+                      <p className="font-mono text-[13px] text-ink-500">
+                        from <span className="text-ink-900">{formatINR(offering.startingPrice)}</span> / {offering.priceUnit}
                       </p>
                     </div>
                     <p className="mt-2 text-[15px] leading-relaxed text-ink-600">{offering.description}</p>
@@ -102,55 +102,46 @@ export default async function ServicesPage() {
         <Container>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 id="price-list-title" className="text-2xl font-bold tracking-tight text-ink-900 sm:text-3xl">
+              <h2 id="price-list-title" className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-3xl">
                 Item price list
               </h2>
               <p className="mt-2 text-ink-500">Standard network prices. Specialty items may add a day to turnaround.</p>
             </div>
-            <ButtonLink href="/book" trailingIcon={<ArrowRight className="size-4" aria-hidden="true" />} className="self-start">
+            <ButtonLink href="/book" className="self-start">
               Book a pickup
             </ButtonLink>
           </div>
 
-          <div className="mt-8 grid gap-5 lg:grid-cols-3">
+          <div className="mt-8 grid gap-10 lg:grid-cols-3 lg:gap-x-12">
             {categories.map((category) => {
               const categoryItems = items.filter((item) => item.category === category.id);
               return (
-                <section key={category.id} aria-labelledby={`cat-${category.id}`} className="rounded-3xl border border-line bg-white p-6 shadow-card">
-                  <div className="flex items-center gap-3">
-                    <span className="flex size-10 items-center justify-center rounded-xl bg-brand-50 text-brand-700">
-                      <ServiceIcon icon={categoryIconKey[category.id]} className="size-5" />
-                    </span>
+                <section key={category.id} aria-labelledby={`cat-${category.id}`}>
+                  <div className="flex items-center gap-3 border-b-2 border-ink-900 pb-3">
+                    <ServiceIcon icon={categoryIconKey[category.id]} className="size-5 text-brand-700" />
                     <div>
-                      <h3 id={`cat-${category.id}`} className="font-bold text-ink-900">
+                      <h3 id={`cat-${category.id}`} className="font-semibold text-ink-900">
                         {category.label}
                       </h3>
-                      <p className="text-sm text-ink-500">{category.description}</p>
                     </div>
                   </div>
-                  <table className="mt-5 w-full text-[15px]">
-                    <caption className="sr-only">{category.label} prices</caption>
-                    <thead className="sr-only">
-                      <tr>
-                        <th scope="col">Item</th>
-                        <th scope="col">Price</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-line">
-                      {categoryItems.map((item) => (
-                        <tr key={item.id}>
-                          <th scope="row" className="py-3 pr-3 text-left font-medium text-ink-800">
-                            {item.name}
-                            {item.note && <span className="block text-xs font-normal text-ink-500">{item.note}</span>}
-                          </th>
-                          <td className="whitespace-nowrap py-3 text-right">
-                            <span className="font-bold text-ink-900">{formatINR(item.price)}</span>
-                            <span className="block text-xs text-ink-500">{unitLabel[item.unit]}</span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                  <p className="mt-2 text-sm text-ink-500">{category.description}</p>
+                  {/* A counter price list: item, dotted leader, price. */}
+                  <dl className="mt-4">
+                    {categoryItems.map((item) => (
+                      <div key={item.id} className="ledger-row flex items-baseline py-2.5">
+                        <dt className="text-[15px] text-ink-800">
+                          {item.name}
+                          {item.note && <span className="block text-xs text-ink-500">{item.note}</span>}
+                        </dt>
+                        <span className="leader" aria-hidden="true" />
+                        <dd className="whitespace-nowrap text-right">
+                          <span className="font-mono text-[15px] text-ink-900">{formatINR(item.price)}</span>
+                          <span className="block text-xs text-ink-500">{unitLabel[item.unit]}</span>
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
                 </section>
               );
             })}

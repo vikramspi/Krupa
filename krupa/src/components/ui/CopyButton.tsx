@@ -25,7 +25,7 @@ export function CopyButton({ value, label, className }: { value: string; label: 
         }
       }}
       className={cn(
-        "inline-flex h-9 items-center gap-1.5 rounded-full border border-line bg-white px-3 text-sm font-semibold text-ink-700 transition-colors hover:bg-ink-50",
+        "inline-flex h-9 items-center gap-1.5 rounded-lg border border-line bg-white px-3 text-sm font-semibold text-ink-700 transition-colors hover:bg-ink-50",
         className,
       )}
     >

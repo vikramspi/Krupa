@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, MapPin, MapPinOff, RefreshCw } from "lucide-react";
+import { MapPin, MapPinOff, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -129,7 +129,7 @@ function VendorsStep() {
     return (
       <BookingPage>
         <EmptyState
-          className="rounded-[32px] border border-line bg-white py-14 shadow-card"
+          className="border border-line bg-white py-14 shadow-card"
           tone="sun"
           icon={<MapPinOff />}
           title={allBusy ? `All partners near ${location.areaName} are fully booked` : `No laundry partners near ${location.areaName} yet`}
@@ -159,9 +159,9 @@ function VendorsStep() {
 
   return (
     <BookingPage wide>
-      <header className="animate-fade-up">
-        <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand-600">Step 2 of 5 · Vendor</p>
-        <h1 className="mt-1.5 text-balance text-[1.75rem] font-bold leading-tight tracking-[-0.03em] text-ink-900 sm:text-[2.1rem]">
+      <header>
+        <p className="font-mono text-[13px] text-brand-700">Step 2 of 5</p>
+        <h1 className="mt-1.5 text-balance text-[1.75rem] font-semibold leading-tight tracking-[-0.03em] text-ink-900 sm:text-[2.1rem]">
           We found {pluralize(availableCount, "laundry partner")} near your location
         </h1>
         <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[15px] text-ink-500">
@@ -193,7 +193,7 @@ function VendorsStep() {
           <p className="text-[15px] text-brand-900">
             You&apos;ve selected <strong className="font-semibold">{selectedVendor.name}</strong>.
           </p>
-          <ButtonLink href="/book/services" size="sm" trailingIcon={<ArrowRight className="size-4" aria-hidden="true" />}>
+          <ButtonLink href="/book/services" size="sm">
             Continue to services
           </ButtonLink>
         </div>
@@ -224,7 +224,7 @@ function VendorsStep() {
               Choose another partner
             </Button>
           ) : (
-            <Button fullWidth size="lg" onClick={() => continueWith(openVendor)} trailingIcon={<ArrowRight className="size-5" aria-hidden="true" />}>
+            <Button fullWidth size="lg" onClick={() => continueWith(openVendor)}>
               Continue with this vendor
             </Button>
           ))

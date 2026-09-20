@@ -1,7 +1,7 @@
 "use client";
 
 import { rememberGuestAccess } from "@/lib/guestTrackingAccess";
-import { ArrowRight } from "lucide-react";
+
 import { useRouter } from "next/navigation";
 import { useRef, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
@@ -98,7 +98,7 @@ export function TrackOrderLookupForm({
         hint={lockOrderId ? "Enter the number used when placing this order" : undefined}
       />
       {lookupError && <ErrorState inline title="Order not found" message={lookupError} />}
-      <Button type="submit" size="lg" fullWidth loading={pending} loadingText="Finding your order…" trailingIcon={<ArrowRight className="size-5" aria-hidden="true" />}>
+      <Button type="submit" size="lg" fullWidth loading={pending} loadingText="Finding your order…">
         {submitLabel}
       </Button>
     </form>

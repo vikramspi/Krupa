@@ -55,7 +55,7 @@ export function MobileNav({ id, open, links, isActive, onClose }: MobileNavProps
           </ul>
           <div className="mt-6 grid gap-3">
             <ButtonLink href="/book" size="lg" fullWidth onClick={() => onClose(false)}>
-              Book a Laundry Pickup
+              Book a pickup
             </ButtonLink>
             <ButtonLink
               href="/track"

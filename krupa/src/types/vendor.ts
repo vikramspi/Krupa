@@ -102,3 +102,22 @@ export interface OrderReview {
   comment: string | null;
   updatedAt: string;
 }
+
+/**
+ * The slice of a partner shown on the public coverage map.
+ *
+ * Deliberately narrow: no contact number and no street coordinates. Pins are
+ * placed from the neighbourhoods a partner collects from, so a partner's own
+ * address is never published.
+ */
+export interface CoveragePartner {
+  id: string;
+  name: string;
+  coverageAreaIds: string[];
+  services: ServiceOfferingId[];
+  turnaroundHours: HourRange;
+  rating: number | null;
+  reviewCount: number;
+  isActive: boolean;
+  acceptsSameDay: boolean;
+}

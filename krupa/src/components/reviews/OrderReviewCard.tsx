@@ -66,7 +66,7 @@ export function OrderReviewCard({ order }: { order: Pick<Order, "id" | "status" 
 
   return (
     <Card as="section" id={titleId} aria-labelledby={`${titleId}-title`} className="scroll-mt-24">
-      <h2 id={`${titleId}-title`} className="font-bold text-ink-900">
+      <h2 id={`${titleId}-title`} className="font-semibold text-ink-900">
         Rate {order.vendor.name}
       </h2>
       <p className="mt-0.5 text-sm text-ink-500">Your review helps other customers choose. It shows your first name and last initial.</p>

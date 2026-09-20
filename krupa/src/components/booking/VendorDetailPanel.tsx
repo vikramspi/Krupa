@@ -75,7 +75,7 @@ export function VendorDetailPanel({ vendor, offerings, categories, prices }: Ven
       </dl>
 
       <section aria-labelledby="vendor-services" className="mt-8">
-        <h3 id="vendor-services" className="font-bold text-ink-900">
+        <h3 id="vendor-services" className="font-semibold text-ink-900">
           Services
         </h3>
         <ul className="mt-3 grid grid-cols-2 gap-2">
@@ -106,7 +106,7 @@ export function VendorDetailPanel({ vendor, offerings, categories, prices }: Ven
       </section>
 
       <section aria-labelledby="vendor-reviews" className="mt-8 scroll-mt-4">
-        <h3 id="vendor-reviews" className="font-bold text-ink-900">
+        <h3 id="vendor-reviews" className="font-semibold text-ink-900">
           Customer reviews
         </h3>
         <VendorReviews vendorId={vendor.id} vendorName={vendor.name} />
@@ -114,7 +114,7 @@ export function VendorDetailPanel({ vendor, offerings, categories, prices }: Ven
 
       <section aria-labelledby="vendor-prices" className="mt-8">
         <div className="flex items-baseline justify-between">
-          <h3 id="vendor-prices" className="font-bold text-ink-900">
+          <h3 id="vendor-prices" className="font-semibold text-ink-900">
             Pricing
           </h3>
           <Badge tone="neutral">{priceLevel(vendor).label}</Badge>
@@ -134,7 +134,7 @@ export function VendorDetailPanel({ vendor, offerings, categories, prices }: Ven
               if (items.length === 0) return null;
               return (
                 <table key={category.id} className="w-full text-[15px]">
-                  <caption className="pb-1.5 text-left text-xs font-bold uppercase tracking-[0.12em] text-ink-400">{category.label}</caption>
+                  <caption className="pb-1.5 text-left font-mono text-[13px] text-ink-500">{category.label}</caption>
                   <tbody className="divide-y divide-line">
                     {items.map((item) => (
                       <tr key={item.id}>

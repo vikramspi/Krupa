@@ -1,22 +1,23 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, Plus_Jakarta_Sans } from "next/font/google";
+import { Bricolage_Grotesque, DM_Mono } from "next/font/google";
 import { Analytics } from "@/components/analytics/Analytics";
 import { siteConfig } from "@/lib/config";
 import { SessionProvider } from "@/state/SessionProvider";
 import { StoreHydration } from "@/state/hydration";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
+// Headings and interface: a slightly condensed, workshop-ish grotesque.
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-bricolage",
   display: "swap",
 });
 
-const instrument = Instrument_Serif({
+// Order numbers, prices, slots — anything that belongs on a laundry ticket.
+const ticket = DM_Mono({
   subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-instrument",
+  weight: ["400", "500"],
+  variable: "--font-ticket",
   display: "swap",
 });
 
@@ -50,14 +51,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#117064",
+  themeColor: "#2d4fa2",
   width: "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-IN" className={`${jakarta.variable} ${instrument.variable}`}>
+    <html lang="en-IN" className={`${bricolage.variable} ${ticket.variable}`}>
       <body className="min-h-dvh">
         <a
           href="#main"

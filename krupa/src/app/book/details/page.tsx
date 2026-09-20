@@ -29,7 +29,7 @@ export default function DetailsStepPage() {
     return (
       <Container size="narrow">
         <EmptyState
-          className="rounded-[32px] border border-line bg-white py-14 shadow-card"
+          className="border border-line bg-white py-14 shadow-card"
           tone="brand"
           icon={<ShieldCheck />}
           title={customer.isSignedIn ? "Verify your mobile number to continue" : "Verify your mobile number to continue"}
@@ -79,7 +79,7 @@ function DetailsStep({ customer }: { customer: NonNullable<ReturnType<typeof use
       showPickupInSummary
     >
       <StepHeader
-        eyebrow="Step 4 of 5 · Pickup"
+        eyebrow="Step 4 of 5"
         title="Where and who should we pick up from?"
         description="Your details are shared only with your laundry partner for this pickup."
       />

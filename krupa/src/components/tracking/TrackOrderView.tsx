@@ -83,7 +83,7 @@ function VerifyAccess({ orderId, onVerified }: { orderId: string; onVerified: (o
         <span className="flex size-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-700" aria-hidden="true">
           <ShieldCheck className="size-6" />
         </span>
-        <h1 className="mt-5 text-2xl font-bold tracking-tight text-ink-900">Confirm it&apos;s your order</h1>
+        <h1 className="mt-5 text-2xl font-semibold tracking-tight text-ink-900">Confirm it&apos;s your order</h1>
         <p className="mt-1.5 text-[15px] text-ink-500">
           To protect your details, enter the mobile number used for order <span className="font-mono font-semibold text-ink-800">{orderId}</span>.
         </p>
@@ -157,14 +157,14 @@ function OrderTracking({ order, onRefresh, signedIn }: { order: Order; onRefresh
 
       <header className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-brand-600">Order tracking</p>
-          <h1 className="mt-1.5 flex flex-wrap items-center gap-3 text-3xl font-bold tracking-[-0.03em] text-ink-950 sm:text-4xl">
+          <p className="font-mono text-[13px] text-brand-700">Order tracking</p>
+          <h1 className="mt-1.5 flex flex-wrap items-center gap-3 text-3xl font-semibold tracking-[-0.03em] text-ink-950 sm:text-4xl">
             <span>
               Order <span className="font-mono tracking-normal">{order.id}</span>
             </span>
             <OrderStatusBadge status={order.status} size="md" />
           </h1>
-          <p className="mt-1.5 text-[15px] text-ink-500">Placed on {formatLongDate(order.createdAt)}</p>
+          <p className="mt-2 font-mono text-[13px] text-ink-500">Placed on {formatLongDate(order.createdAt)}</p>
         </div>
         <Button variant="outline" size="sm" onClick={onRefresh} leadingIcon={<RefreshCw className="size-4" aria-hidden="true" />} className="self-start sm:self-auto">
           Refresh status
@@ -188,7 +188,7 @@ function OrderTracking({ order, onRefresh, signedIn }: { order: Order; onRefresh
                 <StatusIcon className="size-6" />
               </span>
               <div className="min-w-0" aria-live="polite">
-                <h2 id="current-status" className="text-2xl font-bold tracking-tight">
+                <h2 id="current-status" className="text-2xl font-semibold tracking-tight">
                   {meta.label}
                 </h2>
                 <p className="mt-1 text-[15px] leading-relaxed text-white/75">{meta.description}</p>
@@ -211,7 +211,7 @@ function OrderTracking({ order, onRefresh, signedIn }: { order: Order; onRefresh
           </section>
 
           <Card as="section" aria-labelledby="timeline-title">
-            <h2 id="timeline-title" className="mb-6 font-bold text-ink-900">
+            <h2 id="timeline-title" className="mb-6 font-semibold text-ink-900">
               Timeline
             </h2>
             <OrderTrackingTimeline order={order} />
@@ -221,7 +221,7 @@ function OrderTracking({ order, onRefresh, signedIn }: { order: Order; onRefresh
 
         <aside className="space-y-6" aria-label="Order details">
           <Card as="section" aria-labelledby="partner-title" padding="sm" className="p-5">
-            <h2 id="partner-title" className="text-xs font-bold uppercase tracking-[0.12em] text-ink-400">
+            <h2 id="partner-title" className="font-mono text-[13px] text-ink-500">
               Laundry partner
             </h2>
             <div className="mt-3 flex items-center gap-3">
@@ -237,7 +237,7 @@ function OrderTracking({ order, onRefresh, signedIn }: { order: Order; onRefresh
           </Card>
 
           <Card as="section" aria-labelledby="pickup-title" padding="sm" className="p-5">
-            <h2 id="pickup-title" className="text-xs font-bold uppercase tracking-[0.12em] text-ink-400">
+            <h2 id="pickup-title" className="font-mono text-[13px] text-ink-500">
               Pickup & delivery
             </h2>
             <ul className="mt-3 space-y-3 text-[15px]">
@@ -270,7 +270,7 @@ function OrderTracking({ order, onRefresh, signedIn }: { order: Order; onRefresh
           </Card>
 
           <Card as="section" aria-labelledby="items-title" padding="sm" className="p-5">
-            <h2 id="items-title" className="text-xs font-bold uppercase tracking-[0.12em] text-ink-400">
+            <h2 id="items-title" className="font-mono text-[13px] text-ink-500">
               Items & payment
             </h2>
             <ul className="mt-3 divide-y divide-line text-[15px]">

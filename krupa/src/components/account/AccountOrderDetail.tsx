@@ -35,7 +35,7 @@ export function AccountOrderDetail({ orderId }: { orderId: string }) {
     return (
       <Container size="narrow" className="py-16">
         <EmptyState
-          className="rounded-[32px] border border-line bg-white py-14 shadow-card"
+          className="border border-line bg-white py-14 shadow-card"
           tone="brand"
           icon={<LogIn />}
           title="Log in to view this order"
@@ -67,7 +67,7 @@ export function AccountOrderDetail({ orderId }: { orderId: string }) {
     return (
       <Container size="narrow" className="py-16">
         <EmptyState
-          className="rounded-[32px] border border-line bg-white py-14 shadow-card"
+          className="border border-line bg-white py-14 shadow-card"
           icon={<SearchX />}
           title="This order isn't in your account"
           description={`We couldn't find ${orderId} among your orders. It may have been placed with a different mobile number.`}
@@ -97,13 +97,15 @@ export function AccountOrderDetail({ orderId }: { orderId: string }) {
 
       <header className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="flex flex-wrap items-center gap-3 text-3xl font-bold tracking-[-0.03em] text-ink-950">
+          <h1 className="flex flex-wrap items-center gap-3 text-3xl font-semibold tracking-[-0.03em] text-ink-950">
             <span className="font-mono tracking-normal">{o.id}</span>
             <OrderStatusBadge status={o.status} size="md" />
           </h1>
-          <p className="mt-1.5 text-[15px] text-ink-500">
-            Placed {formatLongDate(o.createdAt)} · {o.pricing.itemCount} items · {formatINR(o.pricing.total)}
-          </p>
+          <ul className="mt-2 flex flex-wrap gap-x-6 gap-y-1 font-mono text-[13px] text-ink-500">
+            <li>Placed {formatLongDate(o.createdAt)}</li>
+            <li>{o.pricing.itemCount} items</li>
+            <li>{formatINR(o.pricing.total)}</li>
+          </ul>
         </div>
         <div className="flex flex-wrap gap-2">
           <ReorderButton order={o} size="md" />
@@ -119,7 +121,7 @@ export function AccountOrderDetail({ orderId }: { orderId: string }) {
         <div className="space-y-6">
           <OrderReviewCard order={o} />
           <Card as="section" aria-labelledby="detail-items">
-            <h2 id="detail-items" className="font-bold text-ink-900">
+            <h2 id="detail-items" className="font-semibold text-ink-900">
               Items
             </h2>
             <table className="mt-3 w-full text-[15px]">
@@ -153,7 +155,7 @@ export function AccountOrderDetail({ orderId }: { orderId: string }) {
           </Card>
 
           <Card as="section" aria-labelledby="detail-timeline">
-            <h2 id="detail-timeline" className="mb-5 font-bold text-ink-900">
+            <h2 id="detail-timeline" className="mb-5 font-semibold text-ink-900">
               Order timeline
             </h2>
             <OrderTrackingTimeline order={o} compact />
@@ -162,7 +164,7 @@ export function AccountOrderDetail({ orderId }: { orderId: string }) {
 
         <aside className="space-y-6" aria-label="Order information">
           <Card as="section" aria-labelledby="detail-partner" className="p-5" padding="sm">
-            <h2 id="detail-partner" className="text-xs font-bold uppercase tracking-[0.12em] text-ink-400">
+            <h2 id="detail-partner" className="font-mono text-[13px] text-ink-500">
               Laundry partner
             </h2>
             <div className="mt-3 flex items-center gap-3">
@@ -175,7 +177,7 @@ export function AccountOrderDetail({ orderId }: { orderId: string }) {
           </Card>
 
           <Card as="section" aria-labelledby="detail-pickup" className="p-5" padding="sm">
-            <h2 id="detail-pickup" className="text-xs font-bold uppercase tracking-[0.12em] text-ink-400">
+            <h2 id="detail-pickup" className="font-mono text-[13px] text-ink-500">
               Pickup & delivery
             </h2>
             <ul className="mt-3 space-y-3 text-[15px]">

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, CalendarClock, ShieldCheck, Wallet } from "lucide-react";
+import { CalendarClock, ShieldCheck, Wallet } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { OrderReviewCard } from "@/components/booking/OrderReviewCard";
@@ -105,7 +105,6 @@ function ReviewStep({ onPlaced }: { onPlaced: () => void }) {
       onClick={placeOrder}
       loading={placing}
       loadingText="Placing your order…"
-      trailingIcon={<ArrowRight className="size-5" aria-hidden="true" />}
     >
       Place Laundry Order
     </Button>
@@ -114,7 +113,7 @@ function ReviewStep({ onPlaced }: { onPlaced: () => void }) {
   return (
     <Container>
       <StepHeader
-        eyebrow="Step 5 of 5 · Review"
+        eyebrow="Step 5 of 5"
         title="Review your order"
         description="Check everything looks right. You won't be charged now — pay your partner after delivery."
       />
@@ -124,7 +123,7 @@ function ReviewStep({ onPlaced }: { onPlaced: () => void }) {
 
         <aside className="space-y-4 lg:sticky lg:top-40" aria-label="Payment summary">
           <section aria-labelledby="payment-title" className="rounded-3xl border border-line bg-white p-5 shadow-card sm:p-6">
-            <h2 id="payment-title" className="font-bold text-ink-900">
+            <h2 id="payment-title" className="font-semibold text-ink-900">
               Payment summary
             </h2>
             <div className="mt-4">

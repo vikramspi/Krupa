@@ -95,7 +95,7 @@ export function VendorList({
       ) : (
         <ul className="mt-7 grid gap-x-4 gap-y-6 md:grid-cols-2">
           {visible.map((vendor, index) => (
-            <li key={vendor.id} className="animate-fade-up" style={{ animationDelay: `${index * 60}ms` }}>
+            <li key={vendor.id} style={{ animationDelay: `${index * 60}ms` }}>
               <VendorCard
                 vendor={vendor}
                 offeringNames={offeringNames}

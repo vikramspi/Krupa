@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, LocateFixed, MapPinOff, SearchX } from "lucide-react";
+import { LocateFixed, MapPinOff, SearchX } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
@@ -105,7 +105,7 @@ export default function LocationStepPage() {
   return (
     <BookingPage>
       <StepHeader
-        eyebrow="Step 1 of 5 · Location"
+        eyebrow="Step 1 of 5"
         title="Where should we pick up your laundry?"
         description="We'll find trusted laundry partners that serve your neighbourhood and can pick up at your door."
       />
@@ -141,7 +141,6 @@ export default function LocationStepPage() {
               loading={pending?.kind === "search"}
               loadingText="Checking your area"
               disabled={busy}
-              trailingIcon={<ArrowRight className="size-5" aria-hidden="true" />}
             >
               Find laundry partners
             </Button>
@@ -215,13 +214,13 @@ function LocationResult({
   if (result.status === "coming_soon") {
     const place = result.area?.name ?? result.query;
     return (
-      <div className="mt-6 animate-fade-up rounded-3xl border border-sun-100 bg-sun-50 p-5 sm:p-6">
+      <div className="mt-6 rounded-3xl border border-sun-100 bg-sun-50 p-5 sm:p-6">
         <div className="flex gap-4">
           <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-white text-sun-700 shadow-card" aria-hidden="true">
             <MapPinOff className="size-5" />
           </span>
           <div className="min-w-0">
-            <h2 className="text-lg font-bold tracking-tight text-ink-900">We&apos;re coming soon to {place}</h2>
+            <h2 className="text-lg font-semibold tracking-tight text-ink-900">We&apos;re coming soon to {place}</h2>
             <p className="mt-1 text-[15px] leading-relaxed text-ink-600">
               {result.reason === "outside_city"
                 ? "Krupa Laundry currently picks up within Mumbai. Nearby cities are next on our list."
@@ -238,13 +237,13 @@ function LocationResult({
   }
 
   return (
-    <div className="mt-6 animate-fade-up rounded-3xl border border-line bg-canvas p-5 sm:p-6">
+    <div className="mt-6 rounded-3xl border border-line bg-canvas p-5 sm:p-6">
       <div className="flex gap-4">
         <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl bg-white text-ink-500 shadow-card" aria-hidden="true">
           <SearchX className="size-5" />
         </span>
         <div className="min-w-0">
-          <h2 className="text-lg font-bold tracking-tight text-ink-900">We couldn&apos;t find &ldquo;{result.query}&rdquo;</h2>
+          <h2 className="text-lg font-semibold tracking-tight text-ink-900">We couldn&apos;t find &ldquo;{result.query}&rdquo;</h2>
           <p className="mt-1 text-[15px] text-ink-600">Try your neighbourhood name or 6-digit pincode. Popular areas:</p>
           <ul className="mt-3 flex flex-wrap gap-2">
             {result.suggestions.map((area) => (
@@ -252,7 +251,7 @@ function LocationResult({
                 <button
                   type="button"
                   onClick={() => onPick(area)}
-                  className="rounded-full border border-line bg-white px-3.5 py-1.5 text-sm font-medium text-ink-700 hover:border-brand-300 hover:text-brand-800"
+                  className="rounded-lg border border-line bg-white px-3.5 py-1.5 text-sm font-medium text-ink-700 hover:border-brand-300 hover:text-brand-800"
                 >
                   {area.name}
                 </button>

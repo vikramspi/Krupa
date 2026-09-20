@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, LogOut, Mail, MessageSquareText, Smartphone, Terminal, UserRound } from "lucide-react";
+import { LogOut, Mail, MessageSquareText, Smartphone, Terminal, UserRound } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
@@ -344,7 +344,6 @@ export function LoginForm({ googleEnabled = false, smsWidgetConfig = null }: Log
           disabled={widgetLoading || widgetState === "error"}
           loading={pending === "request"}
           loadingText="Sending code…"
-          trailingIcon={<ArrowRight className="size-5" aria-hidden="true" />}
         >
           {widgetLoading ? "Preparing verification…" : "Send verification code"}
         </Button>
@@ -363,7 +362,7 @@ export function LoginForm({ googleEnabled = false, smsWidgetConfig = null }: Log
         <span className="flex size-12 items-center justify-center rounded-2xl bg-brand-50 text-brand-700" aria-hidden="true">
           <Smartphone className="size-6" />
         </span>
-        <h1 className="mt-5 text-2xl font-bold tracking-tight text-ink-900">Verify your mobile number</h1>
+        <h1 className="mt-5 text-2xl font-semibold tracking-tight text-ink-900">Verify your mobile number</h1>
         <p className="mt-1.5 text-[15px] text-ink-500">
           You&apos;re signed in as {customer.email ?? customer.name}. A verified number is required before you can place an
           order — we&apos;ll add it to this account.
@@ -386,7 +385,7 @@ export function LoginForm({ googleEnabled = false, smsWidgetConfig = null }: Log
         <span className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-700" aria-hidden="true">
           <UserRound className="size-6" />
         </span>
-        <h1 className="mt-5 text-2xl font-bold tracking-tight text-ink-900">
+        <h1 className="mt-5 text-2xl font-semibold tracking-tight text-ink-900">
           You&apos;re logged in as {customer.name || formatPhone(customer.phone ?? "")}
         </h1>
         <p className="mt-1.5 text-[15px] text-ink-500">Pick up where you left off.</p>
@@ -413,7 +412,7 @@ export function LoginForm({ googleEnabled = false, smsWidgetConfig = null }: Log
         </Alert>
       )}
 
-      <h1 className="text-2xl font-bold tracking-tight text-ink-900 sm:text-[1.75rem]">
+      <h1 className="text-2xl font-semibold tracking-tight text-ink-900 sm:text-[1.75rem]">
         {step === "name" ? "One last thing" : "Log in or sign up"}
       </h1>
 
