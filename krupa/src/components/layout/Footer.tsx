@@ -87,7 +87,7 @@ export async function Footer() {
       </Container>
       <div className="border-t border-line">
         <Container className="flex flex-col gap-3 py-6 text-sm text-ink-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Krupa Laundry. All rights reserved.</p>
+          <p>© 2024 Krupa Laundry. All rights reserved.</p>
           <nav aria-label="Legal">
             <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
               <li>
