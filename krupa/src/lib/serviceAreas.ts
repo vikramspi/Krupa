@@ -50,7 +50,10 @@ export function vendorCoverageNames(areaId: string, areaName: string): string[] 
   if (!area) return null;
   const alias = area.aliases?.find((name) => normalise(name) === normalise(areaName));
   if (alias) return [alias];
-  return area.coverageNames ?? null;
+  // An area the import gave no label of its own (Tardeo, Sion) can't be narrowed
+  // any further, so match on the area id alone instead of demanding a label no
+  // partner carries — which would leave a supported area with no partners.
+  return area.coverageNames?.length ? area.coverageNames : null;
 }
 
 /** Coverage only — `partnerCount` is filled in by the caller that can query vendors. */

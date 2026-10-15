@@ -16,16 +16,17 @@ export const serviceAreas: ServiceArea[] = [
   { id: "worli", name: "Worli", zone: "Central Mumbai", city: "Mumbai", pincodes: ["400018", "400030"], coordinates: { lat: 19.01, lng: 72.818 }, coverage: "supported", coverageNames: ["Worli"], aliases: [] },
   { id: "prabhadevi", name: "Prabhadevi", zone: "Central Mumbai", city: "Mumbai", pincodes: ["400025"], coordinates: { lat: 19.0166, lng: 72.8295 }, coverage: "supported", coverageNames: ["Prabhadevi"], aliases: [] },
   { id: "dadar", name: "Dadar", zone: "Central Mumbai", city: "Mumbai", pincodes: ["400014", "400028"], coordinates: { lat: 19.0178, lng: 72.8478 }, coverage: "supported", coverageNames: ["Dadar"], aliases: [] },
-  { id: "mahim", name: "Mahim", zone: "Central Mumbai", city: "Mumbai", pincodes: ["400016"], coordinates: { lat: 19.038, lng: 72.84 }, coverage: "supported" },
-  { id: "matunga", name: "Matunga", zone: "Central Mumbai", city: "Mumbai", pincodes: ["400019"], coordinates: { lat: 19.027, lng: 72.857 }, coverage: "supported" },
+  // No partner in the Mumbai vendor list collects here yet — see "Awaiting a partner" below.
+  { id: "mahim", name: "Mahim", zone: "Central Mumbai", city: "Mumbai", pincodes: ["400016"], coordinates: { lat: 19.038, lng: 72.84 }, coverage: "coming_soon" },
+  { id: "matunga", name: "Matunga", zone: "Central Mumbai", city: "Mumbai", pincodes: ["400019"], coordinates: { lat: 19.027, lng: 72.857 }, coverage: "coming_soon" },
   { id: "sion", name: "Sion", zone: "Central Mumbai", city: "Mumbai", pincodes: ["400022"], coordinates: { lat: 19.039, lng: 72.8619 }, coverage: "supported", coverageNames: [], aliases: ["Chunabhatti"] },
 
   // Western Suburbs
-  { id: "bandra-west", name: "Bandra West", zone: "Western Suburbs", city: "Mumbai", pincodes: ["400050"], coordinates: { lat: 19.0596, lng: 72.8295 }, coverage: "supported" },
+  { id: "bandra-west", name: "Bandra West", zone: "Western Suburbs", city: "Mumbai", pincodes: ["400050"], coordinates: { lat: 19.0596, lng: 72.8295 }, coverage: "coming_soon" },
   { id: "bandra-east", name: "Bandra East & BKC", zone: "Western Suburbs", city: "Mumbai", pincodes: ["400051"], coordinates: { lat: 19.0653, lng: 72.865 }, coverage: "supported", coverageNames: ["Bandra East"], aliases: ["Kalina"] },
-  { id: "khar-west", name: "Khar West", zone: "Western Suburbs", city: "Mumbai", pincodes: ["400052"], coordinates: { lat: 19.0718, lng: 72.8367 }, coverage: "supported" },
+  { id: "khar-west", name: "Khar West", zone: "Western Suburbs", city: "Mumbai", pincodes: ["400052"], coordinates: { lat: 19.0718, lng: 72.8367 }, coverage: "coming_soon" },
   { id: "santacruz-west", name: "Santacruz West", zone: "Western Suburbs", city: "Mumbai", pincodes: ["400054"], coordinates: { lat: 19.0843, lng: 72.836 }, coverage: "supported", coverageNames: ["Santacruz"], aliases: ["Vile Parle"] },
-  { id: "juhu", name: "Juhu", zone: "Western Suburbs", city: "Mumbai", pincodes: ["400049"], coordinates: { lat: 19.1075, lng: 72.8263 }, coverage: "supported" },
+  { id: "juhu", name: "Juhu", zone: "Western Suburbs", city: "Mumbai", pincodes: ["400049"], coordinates: { lat: 19.1075, lng: 72.8263 }, coverage: "coming_soon" },
   { id: "andheri-west", name: "Andheri West", zone: "Western Suburbs", city: "Mumbai", pincodes: ["400053", "400058"], coordinates: { lat: 19.1364, lng: 72.8296 }, coverage: "supported", coverageNames: ["Andheri"], aliases: ["Jogeshwari", "Lokhandwala"] },
   { id: "versova", name: "Versova", zone: "Western Suburbs", city: "Mumbai", pincodes: ["400061"], coordinates: { lat: 19.131, lng: 72.815 }, coverage: "supported", coverageNames: ["Versova"], aliases: [] },
   { id: "andheri-east", name: "Andheri East", zone: "Western Suburbs", city: "Mumbai", pincodes: ["400069", "400059", "400093"], coordinates: { lat: 19.1136, lng: 72.8697 }, coverage: "supported", coverageNames: ["Andheri"], aliases: ["Saki Naka"] },
@@ -43,7 +44,7 @@ export const serviceAreas: ServiceArea[] = [
   { id: "powai", name: "Powai", zone: "Eastern Suburbs", city: "Mumbai", pincodes: ["400076"], coordinates: { lat: 19.1176, lng: 72.906 }, coverage: "supported", coverageNames: ["Powai"], aliases: [] },
   { id: "vikhroli", name: "Vikhroli", zone: "Eastern Suburbs", city: "Mumbai", pincodes: ["400079", "400083"], coordinates: { lat: 19.111, lng: 72.9279 }, coverage: "supported", coverageNames: ["Vikhroli"], aliases: ["Kanjurmarg", "Nahur"] },
 
-  // Coming soon — Mumbai Metropolitan Region
+  // Mumbai Metropolitan Region — Thane, Mulund, Vashi and Airoli are live; the rest are next.
   { id: "thane", name: "Thane", zone: "Thane", city: "Thane", pincodes: ["400601", "400602", "400604", "400606", "400607", "400610"], coordinates: { lat: 19.2183, lng: 72.9781 }, coverage: "supported", coverageNames: ["Thane"], aliases: ["Ghodbunder Road", "Majiwada"] },
   { id: "mulund", name: "Mulund", zone: "Eastern Suburbs", city: "Mumbai", pincodes: ["400080", "400081"], coordinates: { lat: 19.1726, lng: 72.9565 }, coverage: "supported", coverageNames: ["Mulund"], aliases: ["Bhandup"] },
   { id: "vashi", name: "Vashi", zone: "Navi Mumbai", city: "Navi Mumbai", pincodes: ["400703", "400705"], coordinates: { lat: 19.0771, lng: 72.9986 }, coverage: "supported", coverageNames: ["Vashi"], aliases: [] },
@@ -56,5 +57,9 @@ export const serviceAreas: ServiceArea[] = [
   { id: "dombivli", name: "Dombivli", zone: "Kalyan–Dombivli", city: "Dombivli", pincodes: ["421201"], coordinates: { lat: 19.2183, lng: 73.0867 }, coverage: "coming_soon" },
 ];
 
-/** Areas surfaced as quick picks in location inputs. */
-export const popularAreaIds = ["bandra-west", "andheri-west", "powai", "lower-parel", "dadar", "chembur"];
+/**
+ * Areas surfaced as quick picks in location inputs. Every id here must be a
+ * `supported` area with a partner — a quick pick that answers "coming soon" is
+ * a dead end. `locationService.getPopularAreas` filters them again as a guard.
+ */
+export const popularAreaIds = ["santacruz-west", "andheri-west", "powai", "lower-parel", "dadar", "chembur"];

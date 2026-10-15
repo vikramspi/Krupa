@@ -35,7 +35,10 @@ export const locationService = {
   },
 
   async getPopularAreas(): Promise<ServiceArea[]> {
-    return popularAreaIds.map((id) => serviceAreas.find((a) => a.id === id)).filter((a): a is ServiceArea => !!a);
+    // Guard: an area dropped to "coming soon" must stop being offered as a quick pick.
+    return popularAreaIds
+      .map((id) => serviceAreas.find((a) => a.id === id))
+      .filter((a): a is ServiceArea => !!a && a.coverage === "supported");
   },
 
   async getAreaById(areaId: string): Promise<ServiceArea> {
