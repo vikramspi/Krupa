@@ -148,7 +148,7 @@ export function CoverageMap({ areas, partners, serviceNames }: CoverageMapProps)
           id="coverage-title"
           eyebrow="Coverage"
           title="Who collects where"
-          description="Mumbai's 24 municipal wards. The shaded ones are where we collect — pick a partner to light up the wards they cover."
+          description="Mumbai's 24 municipal wards, plus Thane and Navi Mumbai. The shaded ones are where we collect — pick a partner to light up the districts they cover."
         />
 
         <div ref={sectionRef} className="mt-12 grid gap-10 lg:grid-cols-[minmax(0,360px)_1fr] lg:gap-14">
@@ -173,7 +173,7 @@ export function CoverageMap({ areas, partners, serviceNames }: CoverageMapProps)
                   <path key={d.slice(0, 24)} d={d} className="fill-ink-50" />
                 ))}
 
-                {/* Mumbai's 24 municipal wards, tinted by whether we collect
+                {/* Every district on the map, tinted by whether we collect
                     there and lit up for whichever partner has the panel. */}
                 <g clipPath="url(#mumbai-land)" stroke="white" strokeWidth={1.2} strokeLinejoin="round">
                   {MUMBAI_WARDS.map((ward) => {

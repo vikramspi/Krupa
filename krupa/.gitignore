@@ -14,3 +14,6 @@ npm-debug.log*
 
 # env
 .env*.local
+
+# OSM responses cached by scripts/build-map.mjs
+/scripts/.osm-cache/
