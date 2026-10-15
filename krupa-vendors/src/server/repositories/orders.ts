@@ -1,7 +1,8 @@
 import "server-only";
 import { PICKUP_SLOT_LABELS } from "@/lib/slots";
-import { ServiceError, type OrderLine, type OrderStatus, type PickupAddress, type StatusEvent, type VendorOrder } from "@/types";
+import type { OrderLine, OrderStatus, PickupAddress, StatusEvent, VendorOrder } from "@/types";
 import { supabase } from "../supabase";
+import { reportDbError } from "./dbError";
 
 /**
  * Orders as a partner sees them. Every query is scoped to the partner's own
@@ -33,8 +34,7 @@ const SELECT = `id, order_code, status, created_at, items, subtotal, pickup_fee,
   status_history, customers ( name, phone )`;
 
 function fail(action: string, message: string): never {
-  console.error(`[db] ${action} failed`, { message });
-  throw new ServiceError("We couldn't reach our servers. Please try again.", "network");
+  reportDbError(action, message);
 }
 
 function toVendorOrder(row: OrderRow): VendorOrder {

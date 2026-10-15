@@ -1,6 +1,7 @@
 import "server-only";
 import { ServiceError, type AddressLabel, type Customer, type SavedAddress } from "@/types";
 import { supabase } from "../supabase";
+import { reportDbError } from "./dbError";
 
 interface CustomerRow {
   id: string;
@@ -51,8 +52,7 @@ function toAddress(row: AddressRow): SavedAddress {
 }
 
 function fail(action: string, message: string): never {
-  console.error(`[db] ${action} failed`, { message });
-  throw new ServiceError("We couldn't reach our servers. Please try again.", "network");
+  reportDbError(action, message);
 }
 
 /** Finds the customer for a verified phone, creating them on first sign-in. */

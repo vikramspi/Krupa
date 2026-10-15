@@ -1,6 +1,7 @@
 import "server-only";
 import { ServiceError, type OrderReview, type OrderStatus, type VendorReview, type VendorReviewPage, type VendorReviewSummary } from "@/types";
 import { supabase } from "../supabase";
+import { reportDbError } from "./dbError";
 
 /**
  * Vendor reviews. Every review belongs to one delivered order of the reviewing
@@ -13,8 +14,7 @@ const MISSING_TABLE_CODES = new Set(["PGRST205", "42P01"]);
 let warnedMissingTable = false;
 
 function fail(action: string, message: string): never {
-  console.error(`[db] ${action} failed`, { message });
-  throw new ServiceError("We couldn't reach our servers. Please try again.", "network");
+  reportDbError(action, message);
 }
 
 /** Reviews are optional: without the table the rest of the site keeps working. */

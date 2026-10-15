@@ -1,10 +1,10 @@
 import "server-only";
-import { ServiceError, type VendorSessionUser } from "@/types";
+import type { VendorSessionUser } from "@/types";
 import { supabase } from "../supabase";
+import { reportDbError } from "./dbError";
 
 function fail(action: string, message: string): never {
-  console.error(`[db] ${action} failed`, { message });
-  throw new ServiceError("We couldn't reach our servers. Please try again.", "network");
+  reportDbError(action, message);
 }
 
 /** Auth columns. Never logged, never sent to the browser. */

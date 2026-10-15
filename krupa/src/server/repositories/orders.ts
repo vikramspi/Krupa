@@ -1,9 +1,10 @@
 import "server-only";
 import { getSlotTemplate } from "@/lib/schedule";
-import { ServiceError, type Order, type OrderLine, type OrderStatus, type PickupAddress, type StatusEvent } from "@/types";
+import type { Order, OrderLine, OrderStatus, PickupAddress, StatusEvent } from "@/types";
 import { supabase } from "../supabase";
 import type { OrderDraft } from "../buildOrder";
 import { getReviewStats } from "./reviews";
+import { reportDbError } from "./dbError";
 
 interface OrderRow {
   order_code: string;
@@ -35,8 +36,7 @@ const SELECT = `order_code, customer_id, vendor_id, vendor_name, items, subtotal
   vendors ( name, contact_phone, rating, pickup_fee )`;
 
 function fail(action: string, message: string): never {
-  console.error(`[db] ${action} failed`, { message });
-  throw new ServiceError("We couldn't reach our servers. Please try again.", "network");
+  reportDbError(action, message);
 }
 
 /** Rebuilds the app's Order shape from a row, re-hydrating partner details from the catalogue. */
