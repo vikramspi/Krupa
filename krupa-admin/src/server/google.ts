@@ -15,7 +15,16 @@ export const GOOGLE_COOKIE_OPTIONS = {
 };
 
 export function isGoogleConfigured(): boolean {
-  return Boolean(process.env.GOOGLE_CLIENT_ID?.trim() && process.env.GOOGLE_CLIENT_SECRET?.trim());
+  if (!process.env.GOOGLE_CLIENT_ID?.trim() || !process.env.GOOGLE_CLIENT_SECRET?.trim()) return false;
+  // The callback URL is built from NEXT_PUBLIC_SITE_URL. Deployed without it,
+  // sign-in used to hand Google a redirect_uri of http://localhost:3002 and
+  // send whoever clicked it to a machine that isn't there — so the panel looked
+  // broken rather than unconfigured. Treat the missing URL as what it is.
+  if (isProduction && !process.env.NEXT_PUBLIC_SITE_URL?.trim()) {
+    console.error("[auth] NEXT_PUBLIC_SITE_URL is not set, so Google sign-in has no callback URL to offer. Set it to this deployment's own origin.");
+    return false;
+  }
+  return true;
 }
 
 const siteUrl = () => (process.env.NEXT_PUBLIC_SITE_URL?.trim() || "http://localhost:3002").replace(/\/$/, "");
