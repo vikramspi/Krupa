@@ -5,12 +5,12 @@ import { fail, num } from "./shared";
 
 interface Row {
   id: string;
-  vendor_code: string | null;
+  vendor_code?: string | null;
   name: string;
-  contact_email: string | null;
+  contact_email?: string | null;
   contact_phone: string;
   coverage_areas: string[] | null;
-  coverage_area_names: string[] | null;
+  coverage_area_names?: string[] | null;
   offered_service_ids: string[] | null;
   turnaround_estimate: { min_hours?: number; max_hours?: number } | null;
   rating: number | string | null;
@@ -23,14 +23,64 @@ interface Row {
   created_at: string;
 }
 
-const COLUMNS =
-  "id, vendor_code, name, contact_email, contact_phone, coverage_areas, coverage_area_names, offered_service_ids, turnaround_estimate, rating, is_active, price_multiplier, pickup_fee, latitude, longitude, accepts_same_day, created_at";
+const BASE_COLUMNS =
+  "id, name, contact_phone, coverage_areas, offered_service_ids, turnaround_estimate, rating, is_active, price_multiplier, pickup_fee, latitude, longitude, accepts_same_day, created_at";
+
+/**
+ * Columns migration 0008 adds. Until it has been applied they are not there,
+ * and Postgres fails the *whole* query over one unknown name (42703) — which
+ * took the entire vendor section of this panel down, list and detail alike,
+ * while the data it was meant to show sat in the table untouched.
+ *
+ * A partner the operator cannot see is worse than a partner shown without its
+ * code, so these are tried once and dropped if the database hasn't got them.
+ * Everything still works when 0008 lands; the extra fields simply reappear.
+ */
+const IMPORTED_COLUMNS = ["vendor_code", "contact_email", "coverage_area_names"] as const;
+/** 42703 on a read, PGRST204 on a write: "that column isn't there". */
+const MISSING_COLUMN = /42703|PGRST204|does not exist|schema cache/i;
+
+let importedColumnsMissing = false;
+let warnedImportedColumns = false;
+
+function noteImportedColumnsMissing(): void {
+  importedColumnsMissing = true;
+  if (warnedImportedColumns) return;
+  warnedImportedColumns = true;
+  console.warn(
+    "[db] vendors is missing vendor_code / contact_email / coverage_area_names — serving partners without them. Apply supabase/migrations/0008_mumbai_vendors.sql to restore the full record.",
+  );
+}
+
+const vendorColumns = (): string =>
+  importedColumnsMissing ? BASE_COLUMNS : `${BASE_COLUMNS}, ${IMPORTED_COLUMNS.join(", ")}`;
+
+/**
+ * Loose on purpose: `select()` is handed a string built at runtime, so
+ * supabase-js cannot infer a row type and callers cast the result themselves.
+ */
+type QueryResult = { data: unknown; error: { message: string; code?: string } | null };
+
+/** Runs a vendor query, retrying once without the 0008 columns if they're absent. */
+async function readVendors(action: string, run: () => PromiseLike<QueryResult>): Promise<unknown> {
+  const { data, error } = await run();
+  if (!error) return data;
+  if (importedColumnsMissing || !MISSING_COLUMN.test(`${error.code ?? ""} ${error.message}`)) {
+    fail(action, error.message);
+  }
+  noteImportedColumnsMissing();
+  // toColumns() and vendorColumns() both read the flag, so the retry is built
+  // without the absent columns rather than repeating the same failing request.
+  const retry = await run();
+  if (retry.error) fail(action, retry.error.message);
+  return retry.data;
+}
 
 const toVendor = (row: Row): AdminVendor => ({
   id: row.id,
-  vendorCode: row.vendor_code,
+  vendorCode: row.vendor_code ?? null,
   name: row.name,
-  contactEmail: row.contact_email,
+  contactEmail: row.contact_email ?? null,
   contactPhone: row.contact_phone,
   coverageAreas: row.coverage_areas ?? [],
   coverageNames: row.coverage_area_names ?? [],
@@ -48,13 +98,12 @@ const toVendor = (row: Row): AdminVendor => ({
 
 export async function listVendors(): Promise<AdminVendorSummary[]> {
   const db = supabase();
-  const [vendors, orders, reviews, users] = await Promise.all([
-    db.from("vendors").select(COLUMNS).order("name"),
+  const [vendorRows, orders, reviews, users] = await Promise.all([
+    readVendors("vendor list", () => db.from("vendors").select(vendorColumns()).order("name")) as Promise<Row[]>,
     db.from("orders").select("vendor_id, status"),
     db.from("vendor_reviews").select("vendor_id, rating").eq("is_published", true),
     db.from("vendor_users").select("vendor_id").eq("is_active", true),
   ]);
-  if (vendors.error) fail("vendor list", vendors.error.message);
   if (orders.error) fail("vendor order counts", orders.error.message);
   if (reviews.error) fail("vendor review stats", reviews.error.message);
   if (users.error) fail("vendor login counts", users.error.message);
@@ -63,7 +112,7 @@ export async function listVendors(): Promise<AdminVendorSummary[]> {
   const reviewRows = reviews.data as { vendor_id: string; rating: number }[];
   const userRows = users.data as { vendor_id: string }[];
 
-  return (vendors.data as Row[]).map((row) => {
+  return vendorRows.map((row) => {
     const mine = orderRows.filter((o) => o.vendor_id === row.id);
     const ratings = reviewRows.filter((r) => r.vendor_id === row.id).map((r) => r.rating);
     return {
@@ -78,9 +127,10 @@ export async function listVendors(): Promise<AdminVendorSummary[]> {
 }
 
 export async function findVendor(id: string): Promise<AdminVendor | null> {
-  const { data, error } = await supabase().from("vendors").select(COLUMNS).eq("id", id).maybeSingle();
-  if (error) fail("vendor fetch", error.message);
-  return data ? toVendor(data as Row) : null;
+  const data = (await readVendors("vendor fetch", () =>
+    supabase().from("vendors").select(vendorColumns()).eq("id", id).maybeSingle(),
+  )) as Row | null;
+  return data ? toVendor(data) : null;
 }
 
 export interface VendorInput {
@@ -100,12 +150,17 @@ export interface VendorInput {
   acceptsSameDay: boolean;
 }
 
+/**
+ * Built fresh per attempt: if the write comes back saying 0008 hasn't run, the
+ * retry has to leave those columns out rather than send them again. An email or
+ * an imported area list typed before 0008 lands is therefore not stored — the
+ * form still shows it, so it can be saved again once the migration is applied.
+ */
 const toColumns = (input: VendorInput) => ({
   name: input.name,
-  contact_email: input.contactEmail,
+  ...(importedColumnsMissing ? {} : { contact_email: input.contactEmail, coverage_area_names: input.coverageNames }),
   contact_phone: input.contactPhone,
   coverage_areas: input.coverageAreas,
-  coverage_area_names: input.coverageNames,
   offered_service_ids: input.services,
   turnaround_estimate: { min_hours: input.turnaround.minHours, max_hours: input.turnaround.maxHours },
   rating: input.rating,
@@ -118,13 +173,15 @@ const toColumns = (input: VendorInput) => ({
 });
 
 export async function createVendor(input: VendorInput): Promise<AdminVendor> {
-  const { data, error } = await supabase().from("vendors").insert(toColumns(input)).select(COLUMNS).single();
-  if (error) fail("vendor create", error.message);
-  return toVendor(data as Row);
+  const data = (await readVendors("vendor create", () =>
+    supabase().from("vendors").insert(toColumns(input)).select(vendorColumns()).single(),
+  )) as Row;
+  return toVendor(data);
 }
 
 export async function updateVendor(id: string, input: VendorInput): Promise<AdminVendor | null> {
-  const { data, error } = await supabase().from("vendors").update(toColumns(input)).eq("id", id).select(COLUMNS).maybeSingle();
-  if (error) fail("vendor update", error.message);
-  return data ? toVendor(data as Row) : null;
+  const data = (await readVendors("vendor update", () =>
+    supabase().from("vendors").update(toColumns(input)).eq("id", id).select(vendorColumns()).maybeSingle(),
+  )) as Row | null;
+  return data ? toVendor(data) : null;
 }
