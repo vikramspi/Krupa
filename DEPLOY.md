@@ -101,7 +101,8 @@ Then update `NEXT_PUBLIC_SITE_URL`, `CUSTOMER_SITE_URL` and `VENDOR_PORTAL_URL` 
 
 ## 5. Before real customers
 
-- Replace the 8 placeholder vendors with real ones (admin → Vendors), each with a login.
+- Apply migration `0008_mumbai_vendors.sql` to replace the 8 placeholder rows in place, then review each vendor's services, prices, turnaround and location details in admin → Vendors.
+- Add a partner portal login for each vendor separately; the workbook contact emails are not portal credentials.
 - Confirm prices, the pickup fee, free-pickup threshold and the 10% offer.
 - Fill in the legal entity name, address and jurisdiction (the legal pages flag what's missing).
 - Rotate the Supabase secret key and update it in all three projects.

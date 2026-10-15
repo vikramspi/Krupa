@@ -15,6 +15,10 @@ export interface ServiceArea {
   pincodes: string[];
   coordinates: Coordinates;
   coverage: AreaCoverage;
+  /** Exact vendor-locality names represented by this area in imported coverage data. */
+  coverageNames?: string[];
+  /** Additional localities that share this area's geographic reference data. */
+  aliases?: string[];
 }
 
 export type LocationSource = "search" | "saved" | "current";

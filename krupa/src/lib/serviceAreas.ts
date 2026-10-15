@@ -12,10 +12,14 @@ export function findArea(query: string): ServiceArea | undefined {
   if (/^\d{6}$/.test(trimmed)) return serviceAreas.find((a) => a.pincodes.includes(trimmed));
   const q = normalise(trimmed);
   if (!q) return undefined;
+  const namedArea = serviceAreas.find((area) => normalise(area.name) === q || normalise(area.id) === q);
+  if (namedArea) return namedArea;
+  const alias = serviceAreas.flatMap((area) => (area.aliases ?? []).map((name) => ({ area, name })))
+    .find(({ name }) => normalise(name) === q);
+  if (alias) return { ...alias.area, name: alias.name };
   return (
-    serviceAreas.find((a) => normalise(a.name) === q || normalise(a.id) === q) ??
-    serviceAreas.find((a) => q.includes(normalise(a.name))) ??
-    serviceAreas.find((a) => normalise(a.name).startsWith(q) && q.length >= 3)
+    serviceAreas.find((area) => q.includes(normalise(area.name))) ??
+    serviceAreas.find((area) => normalise(area.name).startsWith(q) && q.length >= 3)
   );
 }
 
@@ -26,13 +30,27 @@ export function pincodeFromText(query: string): string | undefined {
 export function searchServiceAreas(query: string): ServiceArea[] {
   const q = normalise(query);
   if (!q) return [];
-  return serviceAreas
-    .filter((a) => normalise(a.name).includes(q) || a.pincodes.some((p) => p.startsWith(query.trim())))
+  const candidates = serviceAreas.flatMap((area) => [
+    area,
+    ...(area.aliases ?? []).map((name) => ({ ...area, name })),
+  ]);
+  return candidates
+    .filter((area) => normalise(area.name).includes(q) || area.pincodes.some((p) => p.startsWith(query.trim())))
     .sort((a, b) => {
       const rank = (x: ServiceArea) => (normalise(x.name).startsWith(q) ? 0 : 1) + (x.coverage === "supported" ? 0 : 2);
       return rank(a) - rank(b) || a.name.localeCompare(b.name);
     })
+    .filter((area, index, areas) => areas.findIndex((candidate) => candidate.id === area.id && candidate.name === area.name) === index)
     .slice(0, 6);
+}
+
+/** Exact imported locality labels that should be used to filter a broad area's vendors. */
+export function vendorCoverageNames(areaId: string, areaName: string): string[] | null {
+  const area = serviceAreas.find((item) => item.id === areaId);
+  if (!area) return null;
+  const alias = area.aliases?.find((name) => normalise(name) === normalise(areaName));
+  if (alias) return [alias];
+  return area.coverageNames ?? null;
 }
 
 /** Coverage only — `partnerCount` is filled in by the caller that can query vendors. */

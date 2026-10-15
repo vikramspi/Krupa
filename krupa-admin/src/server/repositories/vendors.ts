@@ -5,9 +5,12 @@ import { fail, num } from "./shared";
 
 interface Row {
   id: string;
+  vendor_code: string | null;
   name: string;
+  contact_email: string | null;
   contact_phone: string;
   coverage_areas: string[] | null;
+  coverage_area_names: string[] | null;
   offered_service_ids: string[] | null;
   turnaround_estimate: { min_hours?: number; max_hours?: number } | null;
   rating: number | string | null;
@@ -21,13 +24,16 @@ interface Row {
 }
 
 const COLUMNS =
-  "id, name, contact_phone, coverage_areas, offered_service_ids, turnaround_estimate, rating, is_active, price_multiplier, pickup_fee, latitude, longitude, accepts_same_day, created_at";
+  "id, vendor_code, name, contact_email, contact_phone, coverage_areas, coverage_area_names, offered_service_ids, turnaround_estimate, rating, is_active, price_multiplier, pickup_fee, latitude, longitude, accepts_same_day, created_at";
 
 const toVendor = (row: Row): AdminVendor => ({
   id: row.id,
+  vendorCode: row.vendor_code,
   name: row.name,
+  contactEmail: row.contact_email,
   contactPhone: row.contact_phone,
   coverageAreas: row.coverage_areas ?? [],
+  coverageNames: row.coverage_area_names ?? [],
   services: row.offered_service_ids ?? [],
   turnaround: { minHours: row.turnaround_estimate?.min_hours ?? 24, maxHours: row.turnaround_estimate?.max_hours ?? 48 },
   rating: num(row.rating),
@@ -79,8 +85,10 @@ export async function findVendor(id: string): Promise<AdminVendor | null> {
 
 export interface VendorInput {
   name: string;
+  contactEmail: string | null;
   contactPhone: string;
   coverageAreas: string[];
+  coverageNames: string[];
   services: string[];
   turnaround: { minHours: number; maxHours: number };
   rating: number | null;
@@ -94,8 +102,10 @@ export interface VendorInput {
 
 const toColumns = (input: VendorInput) => ({
   name: input.name,
+  contact_email: input.contactEmail,
   contact_phone: input.contactPhone,
   coverage_areas: input.coverageAreas,
+  coverage_area_names: input.coverageNames,
   offered_service_ids: input.services,
   turnaround_estimate: { min_hours: input.turnaround.minHours, max_hours: input.turnaround.maxHours },
   rating: input.rating,

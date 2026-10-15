@@ -106,9 +106,12 @@ export interface AdminOrder extends VendorOrder {
 
 export interface AdminVendor {
   id: string;
+  vendorCode: string | null;
   name: string;
+  contactEmail: string | null;
   contactPhone: string;
   coverageAreas: string[];
+  coverageNames: string[];
   services: string[];
   turnaround: { minHours: number; maxHours: number };
   rating: number | null;

@@ -10,8 +10,10 @@ const SERVICE_SET = new Set<string>(SERVICE_IDS);
 export const vendorSchema = z
   .object({
     name: z.string().trim().min(2).max(80),
+    contactEmail: z.union([z.email().max(160), z.literal("")]),
     contactPhone: z.string().trim().regex(/^[6-9]\d{9}$/, "Enter a 10-digit Indian mobile number."),
     coverageAreas: z.array(z.string()).min(1, "Pick at least one area.").max(60).refine((ids) => ids.every((id) => AREA_IDS.has(id)), "Unknown area."),
+    coverageNames: z.array(z.string().trim().min(2).max(80)).max(60),
     services: z.array(z.string()).min(1, "Pick at least one service.").refine((ids) => ids.every((id) => SERVICE_SET.has(id)), "Unknown service."),
     turnaround: z.object({ minHours: z.number().int().min(4).max(240), maxHours: z.number().int().min(4).max(336) }),
     rating: z.number().min(1).max(5).nullable(),
@@ -24,7 +26,13 @@ export const vendorSchema = z
   })
   .refine((v) => v.turnaround.maxHours >= v.turnaround.minHours, { message: "Max turnaround must be at least the minimum.", path: ["turnaround"] })
   .refine((v) => (v.latitude === null) === (v.longitude === null), { message: "Enter both latitude and longitude, or neither.", path: ["latitude"] })
-  .transform((v) => ({ ...v, coverageAreas: [...new Set(v.coverageAreas)], services: [...new Set(v.services)] }));
+  .transform((v) => ({
+    ...v,
+    contactEmail: v.contactEmail || null,
+    coverageAreas: [...new Set(v.coverageAreas)],
+    coverageNames: [...new Set(v.coverageNames)],
+    services: [...new Set(v.services)],
+  }));
 
 export const vendorUserSchema = z
   .object({

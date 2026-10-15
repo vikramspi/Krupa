@@ -40,7 +40,11 @@ export function VendorsList() {
                   <h2 className="font-bold">{v.name}</h2>
                   <Badge tone={v.isActive ? "success" : "neutral"}>{v.isActive ? "Taking orders" : "Paused"}</Badge>
                 </div>
-                <p className="mt-1 text-sm text-ink-500">{formatPhone(v.contactPhone)}</p>
+                <p className="mt-1 text-sm text-ink-500">
+                  {v.vendorCode && <span className="mr-2 font-semibold">{v.vendorCode}</span>}
+                  {formatPhone(v.contactPhone)}
+                </p>
+                {v.contactEmail && <p className="mt-1 break-all text-sm text-ink-500">{v.contactEmail}</p>}
                 <dl className="mt-4 grid grid-cols-2 gap-3 text-sm">
                   <div>
                     <dt className="text-ink-500">Open orders</dt>

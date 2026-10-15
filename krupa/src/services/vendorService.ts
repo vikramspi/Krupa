@@ -2,7 +2,7 @@
  * vendorService — partner discovery, details and pickup availability.
  *
  * Everything comes from the `vendors` table through server-side route handlers:
- *   getNearbyVendors(location)       → GET /api/vendors/nearby?areaId=&lat=&lng=
+ *   getNearbyVendors(location)       → GET /api/vendors/nearby?areaId=&areaName=&lat=&lng=
  *   getVendorById(vendorId)          → GET /api/vendors/{id}
  *   getPickupSlots(vendorId, date)   → GET /api/vendors/{id}/pickup-slots?date=
  *   getVendorReviews(vendorId, from) → GET /api/vendors/{id}/reviews?offset=
@@ -12,7 +12,7 @@ import { apiRequest } from "./apiClient";
 
 export const vendorService = {
   async getNearbyVendors(location: Pick<BookingLocation, "areaId" | "areaName" | "coordinates">): Promise<VendorMatchResult> {
-    const params = new URLSearchParams({ areaId: location.areaId });
+    const params = new URLSearchParams({ areaId: location.areaId, areaName: location.areaName });
     if (location.coordinates) {
       params.set("lat", String(location.coordinates.lat));
       params.set("lng", String(location.coordinates.lng));

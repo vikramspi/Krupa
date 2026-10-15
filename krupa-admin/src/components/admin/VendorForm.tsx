@@ -17,6 +17,7 @@ import { PageHeader, Panel } from "./common";
 
 interface FormState {
   name: string;
+  contactEmail: string;
   contactPhone: string;
   coverageAreas: string[];
   services: string[];
@@ -33,6 +34,7 @@ interface FormState {
 
 const fromVendor = (v?: AdminVendor): FormState => ({
   name: v?.name ?? "",
+  contactEmail: v?.contactEmail ?? "",
   contactPhone: v?.contactPhone ?? "",
   coverageAreas: v?.coverageAreas ?? [],
   services: v?.services ?? [],
@@ -69,10 +71,22 @@ export function VendorForm({ vendor, onSaved }: { vendor?: AdminVendor; onSaved?
     event.preventDefault();
     setError(null);
     const numberOrNull = (value: string) => (value.trim() === "" ? null : Number(value));
+    const coverageUnchanged =
+      vendor &&
+      form.coverageAreas.length === vendor.coverageAreas.length &&
+      form.coverageAreas.every((id) => vendor.coverageAreas.includes(id));
+    const coverageNames = coverageUnchanged
+      ? vendor.coverageNames
+      : [...new Set(form.coverageAreas.flatMap((id) => {
+          const area = serviceAreas.find((item) => item.id === id);
+          return area?.coverageNames ?? (area ? [area.name] : []);
+        }))];
     const body = {
       name: form.name,
+      contactEmail: form.contactEmail.trim(),
       contactPhone: form.contactPhone.replace(/\D/g, "").slice(-10),
       coverageAreas: form.coverageAreas,
+      coverageNames,
       services: form.services,
       turnaround: { minHours: Number(form.minHours), maxHours: Number(form.maxHours) },
       rating: numberOrNull(form.rating),
@@ -115,6 +129,7 @@ export function VendorForm({ vendor, onSaved }: { vendor?: AdminVendor; onSaved?
         <Panel title="Basics">
           <div className="grid gap-4 md:grid-cols-2">
             <Input label="Shop name" value={form.name} onChange={(e) => set("name", e.target.value)} />
+            <Input label="Contact email" type="email" autoComplete="email" optional value={form.contactEmail} onChange={(e) => set("contactEmail", e.target.value)} />
             <Input label="Contact mobile (shown to customers)" type="tel" inputMode="numeric" value={form.contactPhone} onChange={(e) => set("contactPhone", e.target.value)} placeholder="98200 12345" />
           </div>
           <div className="mt-4 flex flex-wrap gap-4">
@@ -155,6 +170,9 @@ export function VendorForm({ vendor, onSaved }: { vendor?: AdminVendor; onSaved?
           {form.coverageAreas.length > 0 && (
             <p className="mt-3 text-sm text-ink-500">Selected: {form.coverageAreas.map((id) => areaNames.get(id) ?? id).join(", ")}</p>
           )}
+          {vendor?.coverageNames.length ? (
+            <p className="mt-3 text-sm text-ink-500">Imported service areas: {vendor.coverageNames.join(", ")}</p>
+          ) : null}
         </Panel>
 
         <Panel title="Pricing, speed & location">

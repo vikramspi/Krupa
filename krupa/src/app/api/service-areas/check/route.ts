@@ -1,6 +1,6 @@
 import { jsonError } from "@/server/http";
 import { countVendorsForArea } from "@/server/repositories/vendors";
-import { checkAreaCoverage } from "@/lib/serviceAreas";
+import { checkAreaCoverage, vendorCoverageNames } from "@/lib/serviceAreas";
 import { isDatabaseConfigured } from "@/server/env";
 
 /**
@@ -20,7 +20,7 @@ export async function GET(request: Request) {
   let counts = { total: 1, active: 1 };
   if (isDatabaseConfigured()) {
     try {
-      counts = await countVendorsForArea(result.area.id);
+      counts = await countVendorsForArea(result.area.id, vendorCoverageNames(result.area.id, result.area.name));
     } catch (error) {
       console.error("[service-areas] partner count failed", error);
     }

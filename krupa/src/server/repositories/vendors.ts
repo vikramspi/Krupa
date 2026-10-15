@@ -8,6 +8,7 @@ interface VendorRow {
   name: string;
   contact_phone: string;
   coverage_areas: string[] | null;
+  coverage_area_names: string[] | null;
   offered_service_ids: string[] | null;
   turnaround_estimate: { min_hours?: number; max_hours?: number } | null;
   rating: number | string | null;
@@ -20,7 +21,7 @@ interface VendorRow {
 }
 
 const COLUMNS =
-  "id, name, contact_phone, coverage_areas, offered_service_ids, turnaround_estimate, rating, is_active, price_multiplier, pickup_fee, latitude, longitude, accepts_same_day";
+  "id, name, contact_phone, coverage_areas, coverage_area_names, offered_service_ids, turnaround_estimate, rating, is_active, price_multiplier, pickup_fee, latitude, longitude, accepts_same_day";
 
 function fail(action: string, message: string): never {
   console.error(`[db] ${action} failed`, { message });
@@ -95,11 +96,20 @@ async function withReviewStats(vendors: Vendor[]): Promise<Vendor[]> {
 }
 
 /** Partners whose coverage includes this area — inactive ones included, flagged as at capacity. */
-export async function listVendorsForArea(areaId: string): Promise<Vendor[]> {
+export async function listVendorsForArea(areaId: string, coverageNames: string[] | null = null): Promise<Vendor[]> {
   const data = await read("vendor area lookup", () =>
     supabase().from("vendors").select(COLUMNS).contains("coverage_areas", coversArea(areaId)),
   );
-  return withReviewStats((data as VendorRow[]).map(toVendor));
+  const rows = data as VendorRow[];
+  const matchingRows =
+    coverageNames === null
+      ? rows
+      : rows.filter((row) =>
+        coverageNames.length === 0
+          ? (row.coverage_area_names ?? []).length === 0
+          : coverageNames.some((name) => row.coverage_area_names?.includes(name)),
+      );
+  return withReviewStats(matchingRows.map(toVendor));
 }
 
 export async function findVendorById(vendorId: string): Promise<Vendor | null> {
@@ -112,12 +122,23 @@ export async function findVendorById(vendorId: string): Promise<Vendor | null> {
 }
 
 /** Partners covering an area: how many exist at all, and how many are taking orders. */
-export async function countVendorsForArea(areaId: string): Promise<{ total: number; active: number }> {
+export async function countVendorsForArea(
+  areaId: string,
+  coverageNames: string[] | null = null,
+): Promise<{ total: number; active: number }> {
   const data = await read("vendor count", () =>
-    supabase().from("vendors").select("is_active").contains("coverage_areas", coversArea(areaId)),
+    supabase().from("vendors").select("is_active, coverage_area_names").contains("coverage_areas", coversArea(areaId)),
   );
-  const rows = (data ?? []) as { is_active: boolean }[];
-  return { total: rows.length, active: rows.filter((row) => row.is_active).length };
+  const rows = (data ?? []) as { is_active: boolean; coverage_area_names: string[] | null }[];
+  const matchingRows =
+    coverageNames === null
+      ? rows
+      : rows.filter((row) =>
+        coverageNames.length === 0
+          ? (row.coverage_area_names ?? []).length === 0
+          : coverageNames.some((name) => row.coverage_area_names?.includes(name)),
+      );
+  return { total: matchingRows.length, active: matchingRows.filter((row) => row.is_active).length };
 }
 
 /**

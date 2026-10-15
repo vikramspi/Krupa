@@ -38,7 +38,12 @@ export function VendorDetail({ id }: { id: string }) {
       </Link>
       <PageHeader
         title={vendor.name}
-        description={`${formatPhone(vendor.contactPhone)} · added ${formatDateTime(vendor.createdAt)}`}
+        description={[
+          vendor.vendorCode,
+          vendor.contactEmail,
+          formatPhone(vendor.contactPhone),
+          `added ${formatDateTime(vendor.createdAt)}`,
+        ].filter(Boolean).join(" · ")}
         actions={<Badge tone={vendor.isActive ? "success" : "neutral"}>{vendor.isActive ? "Taking orders" : "Paused"}</Badge>}
       />
       {created && (

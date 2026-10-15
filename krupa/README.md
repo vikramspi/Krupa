@@ -4,7 +4,7 @@ The customer-facing website — a responsive site that works in any phone or des
 
 **What's real:** two ways to sign in (phone OTP, or email + password with verified email), customer accounts, saved addresses, laundry partners, order placement, order history and tracking — all in Postgres (Supabase), reached only through server-side route handlers.
 
-**What's placeholder:** the 8 partner rows are obviously fictional ("Placeholder Vendor 1"…) pending real partners — see [Filling in real vendors](#filling-in-real-vendors). The service catalogue, service areas and testimonials are still local reference data in `src/data/`.
+**What's reference data:** the service catalogue, service areas and testimonials are local data in `src/data/`. The eight vendor rows are populated from the Mumbai vendor workbook by migration `0008_mumbai_vendors.sql`; review the existing service, price and location settings before accepting orders.
 
 > Out of scope by design: online payments (cash/UPI on delivery only), and any operator/vendor dashboard — the operator works directly in Supabase.
 
@@ -21,7 +21,7 @@ npm run typecheck
 
 Requires Node 20.9+.
 
-**Before the site will work**, run `supabase/migrations/0001_init.sql` in the Supabase SQL editor, then set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` and `SESSION_SECRET` (`openssl rand -hex 32`). Without them, ordering, sign-in, account and tracking return a clear 503 while the marketing pages keep working.
+**Before the site will work**, apply the SQL files in `supabase/migrations/` in order through `0008_mumbai_vendors.sql` in the Supabase SQL editor, then set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` and `SESSION_SECRET` (`openssl rand -hex 32`). Without them, ordering, sign-in, account and tracking return a clear 503 while the marketing pages keep working.
 
 ## The Krupa platform
 
@@ -91,12 +91,12 @@ supabase/migrations/ SQL schema
 | --- | --- |
 | `customers` | id, phone (unique, nullable), email (unique, nullable), password_hash (nullable), email_verified_at, google_id (unique, nullable — `0005`), name |
 | `addresses` | saved pickup addresses, FK to customers, cascade delete |
-| `vendors` | laundry partners — see [Filling in real vendors](#filling-in-real-vendors) |
+| `vendors` | laundry partners — see [Mumbai vendor data](#mumbai-vendor-data) |
 | `vendor_reviews` | one review per delivered order (`0006`): order FK (unique), vendor, customer, rating 1–5, comment, `is_published` |
 | `orders` | order_code (sequence, `KR-10287`+), customer FK, vendor, items jsonb, price breakdown, pickup date/slot, address jsonb, status, timestamps |
 | `otp_codes` | phone, **code_hash**, expires_at, attempts |
 
-Columns beyond the original spec — `vendor_id`, `contact_email`, `instructions`, `estimated_delivery_from/to`, `status_history` — are marked in the migration; the site needs them to render tracking and reorder.
+Columns beyond the original spec — `vendor_id`, order `contact_email`, `instructions`, `estimated_delivery_from/to`, `status_history` — are marked in the migration; the site needs them to render tracking and reorder. Vendors also have an imported `vendor_code`, contact email, and exact coverage labels, while the UUID primary key remains stable for orders and portal logins.
 
 **The operator updates order status directly in the Supabase table editor.** The tracking page reads live on every visit, so a status change shows up on the customer's next refresh.
 
@@ -227,28 +227,13 @@ roughly 500 messages/day, which is fine pre-launch but not for scale).
 With neither configured, email sign-up returns a clear 503 and order emails are
 logged and skipped — a saved order is never lost to a mail failure.
 
-## Filling in real vendors
+## Mumbai vendor data
 
-Replacing the placeholder partners is a **table edit, not a code change**. Per partner, in the `vendors` table:
+Migration `0008_mumbai_vendors.sql` updates the original eight rows by their existing UUIDs; it does not insert new vendor rows. Workbook IDs `V001`–`V008` are saved as unique `vendor_code` values, preserving all existing order and portal-login references. Contact emails, phone numbers, and the original service-area names are stored on each vendor.
 
-| Column | What to put in it |
-| --- | --- |
-| `name` | Trading name shown to customers |
-| `contact_phone` | 10-digit number — the "Call partner" button and operator emails use it |
-| `coverage_areas` | JSON array of area ids they collect from, e.g. `["bandra-west","khar-west"]` (ids are in `src/data/areas.ts`) |
-| `offered_service_ids` | JSON array from: `wash-fold`, `wash-iron`, `ironing`, `dry-cleaning`, `premium`, `bedsheets`, `blankets`, `shoes` |
-| `turnaround_estimate` | `{"min_hours": 24, "max_hours": 48}` — drives the quoted delivery window |
-| `rating` | 0–5, or **leave null** — the UI then hides stars entirely rather than showing zero |
-| `is_active` | `false` = not taking orders; customers see "at capacity" and can't select them |
-| `price_multiplier` | Applied to catalogue base prices (1.10 = 10% above). **The server recomputes every order from this** |
-| `pickup_fee` | Rupees, waived above the free-pickup threshold |
-| `latitude` / `longitude` | For distance and "nearest" sorting. Null hides distance rather than guessing |
-| `accepts_same_day` | Whether today's pickup slots are offered |
+`coverage_areas` remains the array of app area IDs used for indexed filtering. The area search includes the workbook's exact locality names as aliases, then filters broad-area matches against `coverage_area_names` so localities with different vendors do not leak into each other's results. Where the workbook has no postal codes or coordinates, the existing parent area's geographic reference is retained; confirm local postal coverage before relying on those defaults for live pickups.
 
-Two states are wired to the data, so they can be checked by editing a row:
-
-- **At capacity** — `is_active = false` (Placeholder Vendor 6 ships this way).
-- **No partners found** — an area no row covers (no placeholder covers `gorai`).
+The workbook does not specify services offered, pricing, turnaround, ratings, or coordinates. Those existing vendor settings are not changed by the import and should be reviewed in the admin panel before accepting real orders. Add portal logins separately from **Admin → Vendors**; the workbook email is the vendor contact email, not a portal login.
 
 ## Security
 
@@ -272,7 +257,7 @@ Two states are wired to the data, so they can be checked by editing a row:
 
 ## Before real customers
 
-1. **Vendor rows are placeholders.** The 8 rows in the `vendors` table are named "Placeholder Vendor N" on purpose. Replace them with real partners (above) before taking public orders. Coordinates are entered by hand — there's still no geocoding provider.
+1. **Review vendor operations before launch.** The eight vendor identities and service areas are imported. Confirm each vendor's actual offered services, prices, turnaround, and geographic details in the admin panel before taking public orders.
 2. **MSG91 widget:** set `MSG91_WIDGET_ID`, `MSG91_WIDGET_AUTH_TOKEN` and `MSG91_AUTHKEY` in production, and make sure the widget's SMS template is DLT-approved.
 3. **Legal pages need your entity details** — each page shows exactly what's missing.
 4. **Order status is operator-driven** in the Supabase table editor; there's no vendor-facing tool yet.
