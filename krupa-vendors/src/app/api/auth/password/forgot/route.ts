@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { sendPartnerPasswordReset } from "@/server/email";
+import { isEmailConfigured, sendPartnerPasswordReset } from "@/server/email";
 import { guardDatabase, jsonError, readJson } from "@/server/http";
 import { clientIp, rateLimit } from "@/server/rateLimit";
-import { findUserByEmail, setResetToken } from "@/server/repositories/vendorUsers";
+import { findOrCreateLoginForEmail } from "@/server/partnerAccount";
+import { setResetToken } from "@/server/repositories/vendorUsers";
 import { newLinkToken, RESET_TTL_MS } from "@/server/tokens";
 
 /** POST /api/auth/password/forgot — same answer whether or not the email has a login. */
@@ -23,11 +24,23 @@ export async function POST(request: Request) {
   const email = parsed.data.email.toLowerCase();
   if (!rateLimit(`p-forgot:email:${email}`, 3, HOUR).ok) return Response.json(OK);
 
+  // Not an enumeration question: with no mailer there is no link for anyone, and
+  // answering "it's on its way" would be a flat lie that looks like a lost email.
+  if (!isEmailConfigured()) {
+    console.error("[auth] partner password reset requested but SMTP isn't configured");
+    return jsonError("Email isn't set up yet, so we can't send a reset link. Please contact Krupa Laundry.", 503, "unavailable");
+  }
+
   try {
-    const row = await findUserByEmail(email);
-    if (row?.is_active) {
+    // Creates the login when the address is a shop's own contact_email and no
+    // one has ever signed in for it — otherwise a partner who was never invited
+    // could never set a password, which is exactly how this got stuck before.
+    const row = await findOrCreateLoginForEmail(email);
+    if (row) {
       const { token, hash } = newLinkToken();
       await setResetToken(row.id, hash, new Date(Date.now() + RESET_TTL_MS));
+      // Always "reset": that is the column setResetToken writes, and resolveLink
+      // looks the token up by column. An "invite" link would never resolve.
       const result = await sendPartnerPasswordReset(email, row.name, `${siteUrl()}/set-password?kind=reset&token=${token}`);
       if (!result.sent) console.error("[auth] partner reset email failed", { userId: row.id, error: result.error ?? result.skipped });
     }

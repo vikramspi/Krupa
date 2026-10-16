@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { guardDatabase, jsonError, readJson } from "@/server/http";
 import { clientIp, rateLimit } from "@/server/rateLimit";
-import { findUserByPhone } from "@/server/repositories/vendorUsers";
+import { phoneCanSignIn } from "@/server/partnerAccount";
 import { isValidIndianMobile, normalizePhone } from "@/lib/validation";
 
 /**
@@ -21,8 +21,7 @@ export async function POST(request: Request) {
   if (!parsed.success || !isValidIndianMobile(parsed.data.phone)) {
     return jsonError("Enter a valid 10-digit mobile number.", 400, "validation");
   }
-  const row = await findUserByPhone(normalizePhone(parsed.data.phone));
-  if (!row || !row.is_active) {
+  if (!(await phoneCanSignIn(normalizePhone(parsed.data.phone)))) {
     return jsonError("This number isn't registered for the partner portal. Please contact Krupa Laundry.", 404, "not_found");
   }
   return Response.json({ ok: true });

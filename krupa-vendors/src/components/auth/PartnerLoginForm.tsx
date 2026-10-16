@@ -19,6 +19,18 @@ import * as smsWidget from "@/services/msg91Widget";
 import { useSession } from "@/state/SessionProvider";
 import type { VendorSessionUser } from "@/types";
 
+/** Google's mark, in their brand colours as their branding guidelines require. */
+function GoogleMark() {
+  return (
+    <svg viewBox="0 0 18 18" className="size-5 shrink-0" aria-hidden="true">
+      <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.92c1.7-1.57 2.68-3.88 2.68-6.62z" />
+      <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.92-2.26c-.81.54-1.84.86-3.04.86-2.34 0-4.32-1.58-5.03-3.7H.96v2.33A9 9 0 0 0 9 18z" />
+      <path fill="#FBBC05" d="M3.97 10.72a5.4 5.4 0 0 1 0-3.44V4.95H.96a9 9 0 0 0 0 8.1l3.01-2.33z" />
+      <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.9 11.43 0 9 0A9 9 0 0 0 .96 4.95l3.01 2.33C4.68 5.16 6.66 3.58 9 3.58z" />
+    </svg>
+  );
+}
+
 function safeNext(value: string | null): string {
   return value && value.startsWith("/") && !value.startsWith("//") && !value.startsWith("/\\") ? value : "/orders";
 }
@@ -28,10 +40,24 @@ interface Props {
   smsWidgetConfig: smsWidget.WidgetConfig | null;
 }
 
-/** Partner sign-in: mobile number (SMS code) or email + password. */
+/** What came back from /api/auth/google/callback, in the partner's words. */
+const GOOGLE_ERRORS: Record<string, string> = {
+  unknown: "That Google account isn't the contact email for any Krupa Laundry partner. Use the address Krupa Laundry has for your shop, or log in with your mobile number.",
+  inactive: "That partner account isn't active right now. Please contact Krupa Laundry.",
+  unverified: "Google hasn't verified that email address. Verify it with Google first, or log in with your mobile number.",
+  cancelled: "Google sign-in was cancelled. You can try again or use your mobile number.",
+  expired: "That took too long. Please try signing in again.",
+  unavailable: "Google sign-in isn't set up for the partner portal yet. Please use your mobile number.",
+  rate_limited: "Too many attempts. Please wait a few minutes and try again.",
+  error: "We couldn't sign you in with Google. Please try again, or use your mobile number.",
+};
+
+/** Partner sign-in: Google, mobile number (SMS code), or email + password. */
 export function PartnerLoginForm({ smsWidgetConfig }: Props) {
   const router = useRouter();
-  const next = safeNext(useSearchParams().get("next"));
+  const params = useSearchParams();
+  const next = safeNext(params.get("next"));
+  const googleError = GOOGLE_ERRORS[params.get("google") ?? ""];
   const session = useSession();
   const [mode, setMode] = useState<"phone" | "email">("phone");
 
@@ -52,7 +78,27 @@ export function PartnerLoginForm({ smsWidgetConfig }: Props) {
       <h1 className="mt-1.5 text-2xl font-bold tracking-tight text-ink-900">Log in to manage your orders</h1>
       <p className="mt-1.5 text-[15px] text-ink-500">Use the mobile number or email Krupa Laundry registered for your shop.</p>
 
-      <div role="tablist" aria-label="Login method" className="mt-6 grid grid-cols-2 gap-1.5 rounded-2xl bg-ink-100 p-1.5">
+      {googleError && (
+        <Alert tone="warning" title="Couldn't sign you in" className="mt-5" role="alert">
+          {googleError}
+        </Alert>
+      )}
+
+      <a
+        href={`/api/auth/google?next=${encodeURIComponent(next)}`}
+        className="mt-6 flex min-h-12 w-full items-center justify-center gap-3 rounded-xl border border-line bg-white px-4 text-[15px] font-semibold text-ink-900 transition-colors hover:bg-ink-50"
+      >
+        <GoogleMark />
+        Continue with Google
+      </a>
+
+      <div className="my-6 flex items-center gap-3" aria-hidden="true">
+        <span className="h-px flex-1 bg-line" />
+        <span className="font-mono text-[13px] text-ink-400">or</span>
+        <span className="h-px flex-1 bg-line" />
+      </div>
+
+      <div role="tablist" aria-label="Login method" className="grid grid-cols-2 gap-1.5 rounded-2xl bg-ink-100 p-1.5">
         {([
           { id: "phone", label: "Mobile number", icon: Smartphone },
           { id: "email", label: "Email", icon: Mail },

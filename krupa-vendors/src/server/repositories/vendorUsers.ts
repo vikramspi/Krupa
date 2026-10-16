@@ -52,6 +52,61 @@ export async function findSessionUser(userId: string): Promise<VendorSessionUser
   };
 }
 
+/** The shop itself, used to decide who may open a login for it. */
+export interface VendorContactRow {
+  id: string;
+  name: string;
+  is_active: boolean;
+}
+
+/**
+ * `contact_email` only exists once migration 0008 has been applied. Before that
+ * the column isn't there and Postgres rejects the whole query (42703), so treat
+ * a missing column as "no shop matches" rather than taking sign-in down with
+ * it — the same tolerance the admin panel gives these columns.
+ */
+const MISSING_COLUMN = /42703|does not exist|schema cache/i;
+
+export async function findVendorByContactEmail(email: string): Promise<VendorContactRow | null> {
+  const { data, error } = await supabase()
+    .from("vendors")
+    .select("id, name, is_active")
+    .ilike("contact_email", email)
+    .maybeSingle();
+  if (error) {
+    if (MISSING_COLUMN.test(`${error.code ?? ""} ${error.message}`)) {
+      console.warn("[db] vendors.contact_email is missing — apply migration 0008 to let partners sign in by email");
+      return null;
+    }
+    fail("vendor contact email lookup", error.message);
+  }
+  return (data as VendorContactRow | null) ?? null;
+}
+
+export async function findVendorByContactPhone(phone: string): Promise<VendorContactRow | null> {
+  const { data, error } = await supabase()
+    .from("vendors")
+    .select("id, name, is_active")
+    .eq("contact_phone", phone)
+    .maybeSingle();
+  if (error) fail("vendor contact phone lookup", error.message);
+  return (data as VendorContactRow | null) ?? null;
+}
+
+/** Opens the first login for a shop, at the moment its owner first signs in. */
+export async function createUserForVendor(
+  vendorId: string,
+  input: { name: string; email: string | null; phone: string | null },
+): Promise<{ id: string }> {
+  const { data, error } = await supabase()
+    .from("vendor_users")
+    .insert({ vendor_id: vendorId, name: input.name.slice(0, 80), email: input.email, phone: input.phone, is_active: true })
+    .select("id")
+    .single();
+  if (error) fail("partner login create", error.message);
+  return data as { id: string };
+}
+
 export async function findUserByEmail(email: string): Promise<VendorUserAuthRow | null> {
   const { data, error } = await supabase().from("vendor_users").select(AUTH_COLUMNS).ilike("email", email).maybeSingle();
   if (error) fail("partner email lookup", error.message);
