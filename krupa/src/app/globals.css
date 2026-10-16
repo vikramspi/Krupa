@@ -433,3 +433,43 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ── Staggered entrance ──────────────────────────────────────────────────────
+   A line waits its turn, then lifts into place. The delay is per-element via
+   --rise-delay, so a block of copy arrives in reading order instead of all at
+   once. Starts hidden and is revealed by `.is-in`, which the section sets once
+   it scrolls into view. */
+.rise {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.5s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--rise-delay, 0ms);
+}
+.rise.is-in {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rise,
+  .rise.is-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ── Coverage radar ──────────────────────────────────────────────────────────
+   Rings going out from a pin, for the "do we pick up in your area?" question.
+   Three of them on a stagger, so the sweep never stops mid-pulse. */
+.radar-ring {
+  animation: radar 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  animation-delay: var(--radar-delay, 0ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .radar-ring {
+    animation: none;
+    opacity: 0.25;
+  }
+}
