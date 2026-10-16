@@ -6,6 +6,7 @@ import { HowItWorks } from "@/components/marketing/HowItWorks";
 import { ReviewsCarousel } from "@/components/marketing/ReviewsCarousel";
 import { ServiceAreaChecker } from "@/components/marketing/ServiceAreaChecker";
 import { ServicesGrid } from "@/components/marketing/ServicesGrid";
+import { AboutKrupa } from "@/components/marketing/AboutKrupa";
 import { WhyKrupa } from "@/components/marketing/WhyKrupa";
 import { serviceAreas } from "@/data/areas";
 import { siteConfig } from "@/lib/config";
@@ -77,6 +78,7 @@ export default async function HomePage() {
       <HowItWorks />
       <ServicesGrid offerings={offerings} />
       <WhyKrupa partnerCount={stats.partnerCount} />
+      <AboutKrupa partnerCount={stats.partnerCount} areaCount={areasServed} />
       <CoverageMap
         areas={supportedAreas}
         partners={coveragePartners}
