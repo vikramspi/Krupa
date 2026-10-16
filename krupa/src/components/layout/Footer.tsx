@@ -14,6 +14,7 @@ const columns = [
       { href: "/services", label: "Services & pricing" },
       { href: "/#how-it-works", label: "How it works" },
       { href: "/#service-area", label: "Check your area" },
+      { href: "/about", label: "About us" },
     ],
   },
   {

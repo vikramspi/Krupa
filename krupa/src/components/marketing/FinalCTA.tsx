@@ -8,8 +8,13 @@ export function FinalCTA() {
   return (
     <section aria-labelledby="final-cta-title" className="pb-20 lg:pb-28">
       <Container>
-        {/* A slip torn off the counter pad. */}
-        <div className="on-dark tear-y relative bg-brand-700 px-6 py-14 text-white sm:px-10 lg:px-14 lg:py-16">
+        {/* A slip torn off the counter pad, pulled out to the container's own
+            edge. The negative margin exactly cancels Container's padding, and
+            the slip re-applies it, so the heading inside lands on the same line
+            as every other heading on the page instead of 57px right of them.
+            Matched pair per breakpoint — mismatch them and the page scrolls
+            sideways. */}
+        <div className="on-dark tear-y relative -mx-4 bg-brand-700 px-4 py-14 text-white sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8 lg:py-16">
           <div className="lg:flex lg:items-end lg:justify-between lg:gap-14">
             <div>
               <p className="font-mono text-[13px] text-brand-200">Seven days a week, across Mumbai</p>

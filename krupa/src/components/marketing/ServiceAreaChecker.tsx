@@ -47,15 +47,17 @@ export function ServiceAreaChecker({ popularAreas }: { popularAreas: ServiceArea
   return (
     <section id="service-area" aria-labelledby="service-area-title" className="scroll-mt-20 py-20 lg:py-28">
       <Container>
-        <div className="grid gap-10 border border-line bg-white p-6 shadow-card sm:p-10 lg:grid-cols-2 lg:gap-16 lg:p-14">
-          <SectionHeading
-            id="service-area-title"
-            eyebrow="Service area"
-            title="Do we pick up in your area?"
-            description="Check coverage before you book. We're live across South, Central and suburban Mumbai, and expanding every month."
-          />
+        {/* Outside the card. Inside it, the card's own padding pushed this
+            heading 57px right of every other heading on the page. */}
+        <SectionHeading
+          id="service-area-title"
+          eyebrow="Service area"
+          title="Do we pick up in your area?"
+          description="Check coverage before you book. We're live across South, Central and suburban Mumbai, and expanding every month."
+        />
 
-          <div>
+        <div className="mt-10 border border-line bg-white p-6 shadow-card sm:p-10 lg:p-14">
+          <div className="mx-auto max-w-2xl">
             <form
               noValidate
               onSubmit={(event: FormEvent) => {

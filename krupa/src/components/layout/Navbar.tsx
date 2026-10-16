@@ -16,7 +16,7 @@ const baseLinks: NavLink[] = [
   { href: "/services", label: "Services" },
   { href: "/#how-it-works", label: "How it works" },
   { href: "/#coverage", label: "Coverage" },
-  { href: "/#about", label: "About" },
+  { href: "/about", label: "About" },
   { href: "/track", label: "Track order" },
 ];
 
