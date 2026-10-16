@@ -173,6 +173,8 @@ export interface DashboardStats {
   inProgress: number;
   deliveredLast7Days: number;
   revenueLast7Days: number;
+  deliveredAllTime: number;
+  revenueAllTime: number;
   customers: number;
   newCustomersLast7Days: number;
   activeVendors: number;

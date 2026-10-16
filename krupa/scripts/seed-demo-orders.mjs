@@ -26,10 +26,35 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 /** Reserved TLD: never resolves, never deliverable, unmistakably not a real customer. */
 const DEMO_DOMAIN = "@demo.krupa.test";
+/** The business's first order. Everything is spread evenly from here to today. */
+const HISTORY_START = new Date("2024-07-01T00:00:00Z");
+/**
+ * What the admin's "Revenue · all time" card should land near. Order volume is
+ * scaled to hit it rather than fixed, because the figure is what's being asked
+ * for — the count is just how you get there.
+ */
+const TARGET_REVENUE = 800_000;
+/**
+ * Orders deliberately left mid-flight per partner, on top of the history, so
+ * "Awaiting partner" and "In progress" have something to show. None are
+ * delivered, so they do not move the all-time revenue figure.
+ */
+const LIVE_PER_VENDOR = 6;
+const LIVE_WEIGHTS = [
+  ["placed", 20],
+  ["vendor_assigned", 12],
+  ["pickup_scheduled", 16],
+  ["picked_up", 14],
+  ["processing", 20],
+  ["ready_for_delivery", 10],
+  ["out_for_delivery", 8],
+];
+
+/** <1 bunches orders towards today; 1 would spread them evenly. */
+const GROWTH_SKEW = 0.5;
+/** Opening guess at orders per partner; a second pass scales it to the target. */
 const PER_VENDOR_MIN = 100;
 const PER_VENDOR_MAX = 150;
-/** How far back orders are spread, so "last 7 days" panels have something in them. */
-const HISTORY_DAYS = 120;
 const CUSTOMER_COUNT = 24;
 
 // Mirrors src/lib/pricing.ts.
@@ -46,10 +71,20 @@ const SLOTS = [
 ];
 
 /**
- * Where an order ends up, weighted so the boards look like a working business:
- * mostly finished, a steady tail still moving, a few that fell over.
+ * Where an order ends up.
+ *
+ * Anything older than a month is finished, one way or the other — laundry does
+ * not sit "out for delivery" since last autumn. Only recent orders are still
+ * moving, which is both truthful and what makes the live boards readable.
  */
-const STATUS_WEIGHTS = [
+// Turnaround is 24–48 hours, so an order more than a few days old has landed
+// one way or another. Only the last few days are genuinely still in motion.
+const SETTLED_AFTER_DAYS = 4;
+const SETTLED_WEIGHTS = [
+  ["delivered", 94],
+  ["cancelled", 6],
+];
+const RECENT_WEIGHTS = [
   ["delivered", 62],
   ["cancelled", 5],
   ["out_for_delivery", 6],
@@ -184,7 +219,7 @@ function buildHistory(status, placedAt, vendorName, slotLabel) {
   return history;
 }
 
-function buildOrders({ vendors, customers, catalog, areas }) {
+function buildOrders({ vendors, customers, catalog, areas }, scale = 1) {
   const now = Date.now();
   const orders = [];
 
@@ -198,8 +233,11 @@ function buildOrders({ vendors, customers, catalog, areas }) {
       continue;
     }
 
-    const count = between(PER_VENDOR_MIN, PER_VENDOR_MAX);
-    for (let i = 0; i < count; i++) {
+    const count = Math.max(1, Math.round(between(PER_VENDOR_MIN, PER_VENDOR_MAX) * scale));
+    // One order per partner is anchored to the opening date, so the history
+    // visibly starts where it is meant to instead of wherever chance allowed.
+    let firstOrder = true;
+    const makeOrder = (opts = {}) => {
       const customer = pick(customers);
       const area = pick(vendorAreas);
       const slot = pick(SLOTS);
@@ -216,15 +254,28 @@ function buildOrders({ vendors, customers, catalog, areas }) {
       });
       const pricing = priceOrder(lines, vendor.pickup_fee);
 
-      const placedAt = new Date(now - Math.floor(rnd() * HISTORY_DAYS * 86_400_000));
+      // Skewed towards now rather than spread flat: a business that grew over
+      // these two years, which is both likelier and what keeps the live boards
+      // worth looking at — a flat spread puts ~3% of orders in the last month
+      // and leaves "Awaiting partner" and "In progress" all but empty.
+      // `live` orders are placed inside the settle window on purpose; the rest
+      // are skewed towards now rather than spread flat, as a business that grew
+      // over these two years.
+      const placedAt = opts.live
+        ? new Date(now - rnd() * SETTLED_AFTER_DAYS * 86_400_000)
+        : new Date(HISTORY_START.getTime() + (firstOrder ? 0 : rnd() ** GROWTH_SKEW) * (now - HISTORY_START.getTime()));
+      firstOrder = false;
       const pickupAt = new Date(placedAt.getTime() + between(12, 48) * 3_600_000);
-      const status = weighted(STATUS_WEIGHTS);
+      const ageDays = (now - placedAt.getTime()) / 86_400_000;
+      const status = opts.live
+        ? weighted(LIVE_WEIGHTS)
+        : weighted(ageDays > SETTLED_AFTER_DAYS ? SETTLED_WEIGHTS : RECENT_WEIGHTS);
       const history = buildHistory(status, placedAt, vendor.name, slot.label);
       const turnaround = vendor.turnaround_estimate ?? {};
       const deliveryFrom = new Date(pickupAt.getTime() + (turnaround.min_hours ?? 24) * 3_600_000);
       const deliveryTo = new Date(pickupAt.getTime() + (turnaround.max_hours ?? 48) * 3_600_000);
 
-      orders.push({
+      return {
         customer_id: customer.id,
         vendor_id: vendor.id,
         vendor_name: vendor.name,
@@ -255,8 +306,14 @@ function buildOrders({ vendors, customers, catalog, areas }) {
         status_history: history,
         created_at: placedAt.toISOString(),
         updated_at: history[history.length - 1].at,
-      });
-    }
+      };
+    };
+
+    for (let i = 0; i < count; i++) orders.push(makeOrder());
+    // Delivered revenue is what the all-time figure sums, so these cost it
+    // nothing: without them the live boards sit near-empty, because ~₹8L spread
+    // over two years is about one order a day and only a few are ever in motion.
+    for (let i = 0; i < LIVE_PER_VENDOR; i++) orders.push(makeOrder({ live: true }));
   }
   return orders;
 }
@@ -325,7 +382,18 @@ async function main() {
   console.log(`${new URL(URL_BASE).host}: ${vendors.length} vendors, ${catalog.length} catalogue items, ${areas.size} areas\n`);
 
   const customers = await ensureCustomers(dryRun);
-  const orders = buildOrders({ vendors, customers, catalog, areas });
+
+  // Delivered revenue is what the admin's all-time card sums, so aim at that
+  // directly: build once to learn the average order, then rebuild scaled to the
+  // target. Two passes, not a loop — one correction lands within a few percent
+  // and a loop would only chase its own rounding.
+  const deliveredValue = (list) => list.filter((o) => o.status === "delivered").reduce((sum, o) => sum + o.total, 0);
+  const firstPass = buildOrders({ vendors, customers, catalog, areas });
+  const firstRevenue = deliveredValue(firstPass);
+  const scale = firstRevenue > 0 ? TARGET_REVENUE / firstRevenue : 1;
+  seed = 20261016; // rewind, so the scaled pass is a clean rebuild not a continuation
+  const orders = scale === 1 ? firstPass : buildOrders({ vendors, customers, catalog, areas }, scale);
+  console.log(`Targeting ₹${TARGET_REVENUE.toLocaleString("en-IN")} delivered revenue (scaled ×${scale.toFixed(2)}).\n`);
 
   const byVendor = new Map();
   const byStatus = new Map();
@@ -339,7 +407,11 @@ async function main() {
   for (const [name, n] of [...byVendor].sort()) console.log(`  ${String(n).padStart(4)}  ${name}`);
   console.log("\nStatus spread:");
   for (const [s, n] of [...byStatus].sort((a, b) => b[1] - a[1])) console.log(`  ${String(n).padStart(4)}  ${s}`);
+  const delivered = deliveredValue(orders);
+  const dates = orders.map((o) => o.created_at).sort();
   console.log(`\nTotal: ${orders.length} orders, ₹${revenue.toLocaleString("en-IN")} of non-cancelled value.`);
+  console.log(`Admin "Revenue · all time": ₹${delivered.toLocaleString("en-IN")} across ${orders.filter((o) => o.status === "delivered").length} delivered orders.`);
+  console.log(`Dates: ${dates[0].slice(0, 10)} → ${dates[dates.length - 1].slice(0, 10)}.`);
 
   if (dryRun) {
     console.log("\n--dry-run: nothing was written.");

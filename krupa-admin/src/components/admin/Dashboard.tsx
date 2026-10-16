@@ -67,6 +67,12 @@ function Body({ data }: { data: Data }) {
         <StatCard label="In progress" value={stats.inProgress} hint="Accepted, not yet delivered" href="/orders?status=open" />
         <StatCard label="Orders today" value={stats.ordersToday} href="/orders" />
         <StatCard label="Delivered · 7 days" value={stats.deliveredLast7Days} hint={`${formatINR(stats.revenueLast7Days)} collected by partners`} href="/orders?status=delivered" />
+        <StatCard
+          label="Revenue · all time"
+          value={formatINR(stats.revenueAllTime)}
+          hint={`across ${stats.deliveredAllTime.toLocaleString("en-IN")} delivered orders`}
+          href="/orders?status=delivered"
+        />
         <StatCard label="Customers" value={stats.customers} hint={`${stats.newCustomersLast7Days} new this week`} href="/customers" />
         <StatCard label="Vendors taking orders" value={`${stats.activeVendors} / ${stats.totalVendors}`} href="/vendors" />
         <StatCard label="Review average" value={stats.reviewAverage?.toFixed(1) ?? "—"} hint={`${stats.reviewCount} published`} href="/reviews" />
