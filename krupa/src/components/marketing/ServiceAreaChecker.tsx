@@ -7,7 +7,6 @@ import { AreaWaitlistForm } from "@/components/booking/AreaWaitlistForm";
 import { LocationInput } from "@/components/booking/LocationInput";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { CoverageRadar } from "./CoverageRadar";
 import { getErrorMessage } from "@/lib/errors";
 import { pluralize } from "@/lib/format";
 import { locationService } from "@/services";
@@ -49,17 +48,14 @@ export function ServiceAreaChecker({ popularAreas }: { popularAreas: ServiceArea
     <section id="service-area" aria-labelledby="service-area-title" className="scroll-mt-20 py-20 lg:py-28">
       <Container>
         <div className="grid gap-10 border border-line bg-white p-6 shadow-card sm:p-10 lg:grid-cols-2 lg:gap-16 lg:p-14">
-          <div className="relative">
-            <SectionHeading
-              id="service-area-title"
-              eyebrow="Service area"
-              title="Do we pick up in your area?"
-              description="Check coverage before you book. We're live across South, Central and suburban Mumbai, and expanding every month."
-            />
-            <CoverageRadar />
-          </div>
+          <SectionHeading
+            id="service-area-title"
+            eyebrow="Service area"
+            title="Do we pick up in your area?"
+            description="Check coverage before you book. We're live across South, Central and suburban Mumbai, and expanding every month."
+          />
 
-          <div className="relative">
+          <div>
             <form
               noValidate
               onSubmit={(event: FormEvent) => {
