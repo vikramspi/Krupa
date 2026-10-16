@@ -58,6 +58,11 @@ export function AboutKrupa({ partnerCount, areaCount }: { partnerCount: number; 
                 degree student in Industrial Engineering &amp; Management at IIT Kharagpur, who built and still runs
                 the service — the matching, the partner network, and this website.
               </p>
+              <p>
+                Several of the laundries collecting for Krupa are his own family. That is not a detail we keep
+                quiet about: it is why every partner is named on this site instead of hidden behind a brand, and
+                why a bad wash here is someone&apos;s reputation rather than a support ticket.
+              </p>
             </div>
 
             {(partnerCount > 0 || areaCount > 0) && (
